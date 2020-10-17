@@ -28,7 +28,6 @@ void run_ParseEAs(){
 
 
   vector<vector<double>> Fin;
-  vector<vector<double>> ptRegions;
   vector<double> EAread;
 
 
@@ -64,10 +63,6 @@ void run_ParseEAs(){
 	  double etaHigh=ptRegions[i][1];
 	  t.CutBasedID(i,etaLow,etaHigh,EAhist);
   }
-  cout<<"----------------------Barrel--------------"<<endl;
-  t.CutBasedID(1,EAhist);
-  cout<<"----------------------End Cap--------------"<<endl;
-  t.CutBasedID(2,EAhist);
 
 
 

@@ -82,7 +82,7 @@ public :
    virtual void     Show(Long64_t entry = -1);
    //   virtual void     SaCH(int reg);
    virtual void     ArCalc(double e_min,double e_max,int bin);
-   virtual void     CutBasedID(int reg,const TH2D *EAhist);
+   virtual void     CutBasedID(int reg,double etaLow, double etaHigh, const TH2D *EAhist);
 };
 
 #endif
