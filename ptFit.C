@@ -15,7 +15,7 @@ void ptFit(const string NorP, const string fittype, const int region){
 
   //TFile *f1 = new TFile("/uscms_data/d3/asroy/PhotonIdTuning/CMSSW_7_3_5/src/CutBasedPhoID2016/merged/ChEA_ISOPT/CutTMVABarrel90_HPT.root");
   TFile *f1 = new TFile(("HPT/CutTMVAregion"+to_string(region)+".root").c_str(),"READ");
-  float genPt,ppt,peta,Sie_ie,iso_P,iso_C,iso_N,to_e,weighT;
+  float genPt,ppt,peta,Sie_ie,iso_P,iso_C,iso_N,to_e,weighT,relevant_iso;
   int nvtx;
   gStyle->SetOptStat(0);
 
@@ -47,11 +47,15 @@ TTree *t_B = (TTree*)f1->Get("t_B");
   t_B->SetBranchAddress("Nvtx",&nvtx);
   t_B->SetBranchAddress("Peta",&peta);
   t_B->SetBranchAddress("Ppt",&ppt);
+  if (NorP == "N") {
+  	t_S->SetBranchAddress("isoN",&relevant_iso);
+  }
+  else t_S->SetBranchAddress("isoP",&relevant_iso);
 
   TH2F *isoPptS = new TH2F("isoPptS",("Iso "+NorP+" vs Pt").c_str(),250,0,1000,1000,0,100);
 
-  float *relevant_iso = (NorP == "P" ? &iso_P : &iso_N);
-  float lowPtCut = ( region >1 && NorP =="P" ? 25. : 15. );
+  // float *relevant_iso = (NorP == "P" ? &iso_P : &iso_N);
+  float lowPtCut = ( region >0 && NorP =="P" ? 25. : 15. );
 
   for(int i  = 0; i < t_S->GetEntries();i++){
     t_S->GetEntry(i);
@@ -60,7 +64,7 @@ TTree *t_B = (TTree*)f1->Get("t_B");
     if(iso_P == 0) continue;
 	if(ppt< 15.) cout<<"WTF!!!"<<endl;
 
-    isoPptS->Fill(ppt,*relevant_iso);
+    isoPptS->Fill(ppt,relevant_iso);
   }
 
   cout<<"Built the 2d HISTOGRAM"<<endl;

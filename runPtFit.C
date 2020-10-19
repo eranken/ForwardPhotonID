@@ -3,8 +3,9 @@
 #include "ptFit.C"
 
 void runPtFit() {
-	ptFit("P","lin",1);
-	ptFit("N","lin",1);
-	ptFit("P","lin",2);
-	ptFit("N","lin",2);
+	int N_Regions=4;
+	for (size_t i = 0; i < N_Regions; i++) {
+		ptFit("P","lin",i);
+		ptFit("N","lin",i);
+	}
 }

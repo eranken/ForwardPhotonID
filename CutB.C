@@ -113,8 +113,7 @@ void CutID::CutBasedID(int reg, double etaLow, double etaHigh, const TH2D* EAhis
     //Pt Cut
     //    if(gedPhPt < 15 || gedPhPt > 200)continue;
     if(gedPhPt< 15) continue; // || gedPhPt > 200)continue;
-
-    //Eta barrel endcap def
+	//Eta barrel endcap def
 	if(fabs(gedPhEta)<etaLow || fabs(gedPhEta)>etaHigh) continue;
 
 
@@ -150,7 +149,7 @@ void CutID::CutBasedID(int reg, double etaLow, double etaHigh, const TH2D* EAhis
     double eta = gedPhEta;
 	int biin = EAhist->GetYaxis()->FindFixBin(eta)-1;
 	if (biin>=EAhist->GetNbinsY()) {
-		continue;
+		biin=EAhist->GetNbinsY()-1;
 	}
 
 	EAch  = EAhist->GetBinContent(1,biin);
@@ -168,9 +167,12 @@ void CutID::CutBasedID(int reg, double etaLow, double etaHigh, const TH2D* EAhis
 
     //EOF THE ISOLATION CALCULATION
 
-    if(reg == 1 && fabs(gedPhEta) > 1.4442 ) continue;
-    if(reg == 2 && ( fabs(gedPhEta) < 1.566 || fabs(gedPhEta) > 3.  )) continue;
 
+
+    // if(reg == 1 && fabs(gedPhEta) > 1.4442 ) continue;
+    // if(reg == 2 && ( fabs(gedPhEta) < 1.566 || fabs(gedPhEta) > 3.  )) continue;
+	//Eta barrel endcap def
+	if(fabs(gedPhEta)<etaLow || fabs(gedPhEta)>etaHigh) continue;
 
 
     if(gedPhisPrompt){
