@@ -104,7 +104,7 @@ void CutID::CutBasedID(int reg, double etaLow, double etaHigh, const TH2D* EAhis
   if (fChain == 0) return;
   Long64_t nentries = fChain->GetEntriesFast();
   Long64_t nbytes = 0, nb = 0;
-  for (Long64_t jentry=0; jentry<nentries;jentry++){
+  for (Long64_t jentry=0; jentry<100;jentry++){
     Long64_t ientry = LoadTree(jentry);
     if (ientry < 0) break;
     nb = fChain->GetEntry(jentry);   nbytes += nb;
@@ -132,7 +132,7 @@ void CutID::CutBasedID(int reg, double etaLow, double etaHigh, const TH2D* EAhis
   cout<<"end of first loop on events"<<endl;
 
 
-  for (Long64_t jentry=0; jentry<nentries;jentry++){
+  for (Long64_t jentry=0; jentry<100;jentry++){
     Long64_t ientry = LoadTree(jentry);
     if (ientry < 0) break;
     nb = fChain->GetEntry(jentry);   nbytes += nb;
@@ -147,9 +147,10 @@ void CutID::CutBasedID(int reg, double etaLow, double etaHigh, const TH2D* EAhis
 
     //Setting up the effective areas
     double eta = gedPhEta;
-	int biin = EAhist->GetYaxis()->FindFixBin(eta)-1;
-	if (biin>=EAhist->GetNbinsY()) {
-		biin=EAhist->GetNbinsY()-1;
+	int biin = EAhist->GetYaxis()->FindFixBin(fabs(eta));
+	if (biin>EAhist->GetNbinsY()) {
+		continue;
+		// biin=EAhist->GetNbinsY();
 	}
 
 	EAch  = EAhist->GetBinContent(1,biin);

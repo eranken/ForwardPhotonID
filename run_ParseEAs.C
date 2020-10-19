@@ -17,7 +17,7 @@ void run_ParseEAs(){
 
 //  gSystem->CompileMacro("CutID.C");
 
-//	string inputFilePath = "Input/gjet_pt15to6000.root";
+	// string inputFilePath = "Input/gjet_pt15to6000.root";
 	string inputFilePath = "root://eoscms.cern.ch//eos/cms/store/group/phys_egamma/PhotonIDtuning/CutBasedID/nTuples_94X_v2/gjet_pt15to6000.root";
 	  vector<vector<double>> ptRegions;
 	  ptRegions.push_back({0.,1.4442});
