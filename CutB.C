@@ -104,7 +104,7 @@ void CutID::CutBasedID(int reg, double etaLow, double etaHigh, const TH2D* EAhis
   if (fChain == 0) return;
   Long64_t nentries = fChain->GetEntriesFast();
   Long64_t nbytes = 0, nb = 0;
-  for (Long64_t jentry=0; jentry<100;jentry++){
+  for (Long64_t jentry=0; jentry<nentries;jentry++){
     Long64_t ientry = LoadTree(jentry);
     if (ientry < 0) break;
     nb = fChain->GetEntry(jentry);   nbytes += nb;
@@ -132,7 +132,7 @@ void CutID::CutBasedID(int reg, double etaLow, double etaHigh, const TH2D* EAhis
   cout<<"end of first loop on events"<<endl;
 
 
-  for (Long64_t jentry=0; jentry<100;jentry++){
+  for (Long64_t jentry=0; jentry<nentries;jentry++){
     Long64_t ientry = LoadTree(jentry);
     if (ientry < 0) break;
     nb = fChain->GetEntry(jentry);   nbytes += nb;
