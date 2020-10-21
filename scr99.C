@@ -2,14 +2,26 @@
 #include <TMath.h>
 
 
-void Scr99(int region, iso ){
+void scr99(int region){
 
-
-  TFile *f1 = new TFile("/afs/cern.ch/work/e/eranken/private/space/CMSSW_9_4_13/src/PhotonIdTuning/merged/AllPV/PF/Trainner/CutTMVAEndCap90_test.root");
+  TFile *f1 = new TFile(("ALL/CutTMVAregion"+to_string(region)+".root").c_str());
   TTree *t_S = (TTree*)f1->Get("t_S");
+ifstream isoPfile;
+ifstream isoNfile;
+isoPfile.open(("HPT/isoP"+to_string(region)+".txt"));
+isoNfile.open(("HPT/isoN"+to_string(region)+".txt"));
+TString isoP_formstring;
+TString isoN_formstring;
+isoPfile>>isoP_formstring;
+isoNfile>>isoN_formstring;
 
+cout<<isoP_formstring<<endl;
+cout<<isoN_formstring<<endl;
 
-  float ToE,Sie,IsoP,IsoC,IsoN,weighT,Ppt;
+TFormula *isoP_form = new TFormula(("isoPreg"+to_string(region)).c_str(),isoP_formstring);
+TFormula *isoN_form = new TFormula(("isoNreg"+to_string(region)).c_str(),isoN_formstring);
+
+float ToE,Sie,IsoP,IsoC,IsoN,weighT,Ppt;
 
   ofstream myfile;
   myfile.open("Cuts/99per.txt");
@@ -60,8 +72,9 @@ void Scr99(int region, iso ){
     HH->Fill(ToE,weighT);
     HS->Fill(Sie,weighT);
 
-    double isoph = TMath::Max(IsoP - 0.0036*Ppt,0.0);
-    double isoneu = TMath::Max(IsoN - (0.0153*Ppt+0.000016*Ppt*Ppt),0.0);
+
+    double isoph = TMath::Max(0.0, isoP_form->Eval(Ppt));
+    double isoneu = TMath::Max(0.0, isoN_form->Eval(Ppt));
 
     //double isoph = TMath::Max(IsoP - 0.0034*Ppt,0.0);
     //double isoneu = TMath::Max(IsoN - (0.0139*Ppt+0.000025*Ppt*Ppt),0.0);
@@ -191,7 +204,7 @@ void Scr99(int region, iso ){
   cout<<"IsoC :"<<xccf<<endl;
   cout<<"IsoN :"<<xcnf<<endl;
   */
-  TFile *f2 = new TFile("Vars.root","recreate");
+  TFile *f2 = new TFile(("ALL/Vars"+to_string(region)+".root").c_str(),"recreate");
   HS->Write();
   HH->Write();
   HP->Write();

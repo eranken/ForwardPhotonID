@@ -102,8 +102,8 @@ void CutID::CutBasedID(int reg, double etaLow, double etaHigh, const TH2D* EAhis
 
 
   if (fChain == 0) return;
-  // Long64_t nentries = fChain->GetEntriesFast();
-  Long64_t nentries = 100;
+  Long64_t nentries = fChain->GetEntriesFast();
+  //Long64_t nentries = 100;
   Long64_t nbytes = 0, nb = 0;
   for (Long64_t jentry=0; jentry<nentries;jentry++){
     Long64_t ientry = LoadTree(jentry);
@@ -160,7 +160,7 @@ void CutID::CutBasedID(int reg, double etaLow, double etaHigh, const TH2D* EAhis
 	EAch  = EAhist->GetBinContent(1,biin);
 	EAneu = EAhist->GetBinContent(2,biin);
     EAph  = EAhist->GetBinContent(3,biin);
-	cout<<"eta: "<< to_string(fabs(eta)) << " biin: "<<to_string(biin)<< " isoP slope: "<<EAph<<endl;
+	//cout<<"eta: "<< to_string(fabs(eta)) << " biin: "<<to_string(biin)<< " isoP slope: "<<EAph<<endl;
 
     float PhI = gedPhoIso;
     float ChgI = gedChgIso;
