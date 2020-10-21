@@ -4,10 +4,10 @@
 #include <TStyle.h>
 #include <TCanvas.h>
 
-void CutID::CutBasedID(int reg, double etaLow, double etaHigh, const TH2D* EAhist){
+void CutID::CutBasedID(int reg, double etaLow, double etaHigh, const TH2D* EAhist, string outDir){
 
   TFile *f1;
-  f1 =  new TFile(("CutTMVAregion"+to_string(reg)+".root").c_str(),"recreate");
+  f1 =  new TFile((outDir+"/CutTMVAregion"+to_string(reg)+".root").c_str(),"recreate");
 
   TTree *t_S = new TTree("t_S","CUT NEEDS THIS  ");
   TTree *t_B = new TTree("t_B","CUT NEEDS THIS ");
@@ -102,7 +102,8 @@ void CutID::CutBasedID(int reg, double etaLow, double etaHigh, const TH2D* EAhis
 
 
   if (fChain == 0) return;
-  Long64_t nentries = fChain->GetEntriesFast();
+  // Long64_t nentries = fChain->GetEntriesFast();
+  Long64_t nentries = 100;
   Long64_t nbytes = 0, nb = 0;
   for (Long64_t jentry=0; jentry<nentries;jentry++){
     Long64_t ientry = LoadTree(jentry);
@@ -153,9 +154,13 @@ void CutID::CutBasedID(int reg, double etaLow, double etaHigh, const TH2D* EAhis
 		// biin=EAhist->GetNbinsY();
 	}
 
+
+
+
 	EAch  = EAhist->GetBinContent(1,biin);
 	EAneu = EAhist->GetBinContent(2,biin);
     EAph  = EAhist->GetBinContent(3,biin);
+	cout<<"eta: "<< to_string(fabs(eta)) << " biin: "<<to_string(biin)<< " isoP slope: "<<EAph<<endl;
 
     float PhI = gedPhoIso;
     float ChgI = gedChgIso;

@@ -36,17 +36,17 @@ void ErrCalc(TH1D *HIST,int binxn,double perc,double & X_val, double & errXL,dou
   TH1F *h1 = (TH1F*)HIST->Clone();
   int arsize = h1->GetXaxis()->GetNbins();
 
-  if(h1->GetEntries() == 0 ) {cout<<"empty hist"<<endl; return;};
+  if(h1->GetEntries() < 10 ) {cout<<"empty hist"<<endl; return;};
 
-  double *eff;
-  double *eff_err;
-  double *cutV;
-  double *cutV_err;
+  // double *eff;
+  // double *eff_err;
+  // double *cutV;
+  // double *cutV_err;
 
-  eff      = new double[arsize];
-  cutV     = new double[arsize];
-  eff_err  = new double[arsize];
-  cutV_err = new double[arsize];
+  double* eff      = new double[arsize];
+  double* cutV     = new double[arsize];
+  double* eff_err  = new double[arsize];
+  double* cutV_err = new double[arsize];
   h1->Draw();
   int tot = h1->GetEntries();
   float tot_nz = tot - h1->GetBinContent(1);
@@ -55,8 +55,6 @@ void ErrCalc(TH1D *HIST,int binxn,double perc,double & X_val, double & errXL,dou
     for(int i  = 1; i < (h1->GetXaxis()->GetNbins() + 1); i++){
       double xCut = h1->GetXaxis()->GetBinLowEdge(i);
       integ += h1->GetBinContent(i);
-
-
       if(integ != 0 && tot != 0 ){
 	eff[i -1] = (integ*1.0/tot);
 	//eff_err[i -1] = ((integ*1.0/tot)*sqrt(pow(sqrt(tot)/tot,2) + pow(sqrt(integ)/integ,2) ));
@@ -129,6 +127,7 @@ void ErrCalc(TH1D *HIST,int binxn,double perc,double & X_val, double & errXL,dou
       if( err_up [i] > perc){ up = i;
       	break;
       }
+	  // cout<<"err "<<i<<" of "<<arsize<<" "<<err_up[i]<<endl;
     }
     for( int i  = 0; i < arsize ; i++){
       if( err_down [i] > perc){
@@ -140,6 +139,7 @@ void ErrCalc(TH1D *HIST,int binxn,double perc,double & X_val, double & errXL,dou
     // here it returns the extrapolated result
 
     double Usl   = (err_up[up] - err_up[up-1])/(cutV[up] - cutV[up-1]);
+	// cout<<"stupid EGM "<<up<<", "<<cutV[up] <<", "<<cutV[up-1]<<endl;
     double Ustom = err_up[up] - Usl*cutV[up];
     double err_1 = (perc - Ustom)/Usl;
 
@@ -184,7 +184,6 @@ void ErrCalc(TH1D *HIST,int binxn,double perc,double & X_val, double & errXL,dou
     }
 
     if(down == -99){
-
       // errXL = ( h1->GetXaxis()->GetBinCenter(arsize) - X_val );
       int dif = 0;
       for(int i = 0; i < arsize; i++){
@@ -194,13 +193,31 @@ void ErrCalc(TH1D *HIST,int binxn,double perc,double & X_val, double & errXL,dou
 	}
       }
       errXH = (cutV[dif] - X_val );
-
-
     }else{
        errXH = err_2 - X_val;
     }
 
-
+	if (!(X_val>0 || X_val<=0)) {
+		cout <<"xval NAN"<<endl;
+		X_val = -1.;
+		errXL = 0.;
+		errXH = 0.;
+		return;
+	}
+	if (!(errXL>0 || errXL<=0)) {
+		cout <<"xerr_L NAN"<<endl;
+		X_val = -1.;
+		errXL = 0.;
+		errXH = 0.;
+		return;
+	}
+	if (!(errXH>0 || errXH<=0)) {
+		cout <<"xerr_H NAN"<<endl;
+		X_val = -1.;
+		errXL = 0.;
+		errXH = 0.;
+		return;
+	}
 
 
 

@@ -16,9 +16,13 @@ void run_ParseEAs(){
   //--------------------------------------------------------------------------------------------
 
 //  gSystem->CompileMacro("CutID.C");
+	string mode = "flatpt";
 
-	// string inputFilePath = "Input/gjet_pt15to6000.root";
-	string inputFilePath = "root://eoscms.cern.ch//eos/cms/store/group/phys_egamma/PhotonIDtuning/CutBasedID/nTuples_94X_v2/gjet_pt15to6000.root";
+	string inputFilePath;
+	if (mode=="flatpt") {
+		inputFilePath = "root://eoscms.cern.ch//eos/cms/store/group/phys_egamma/PhotonIDtuning/CutBasedID/nTuples_94X_v2/gjet_pt15to6000.root";
+	}
+	else inputFilePath = "root://eoscms.cern.ch//eos/cms/store/group/phys_egamma/PhotonIDtuning/CutBasedID/nTuples_94X_v2/GJetgjet_add.root";
 	  vector<vector<double>> ptRegions;
 	  ptRegions.push_back({0.,1.4442});
 	  ptRegions.push_back({1.566,2.5});
@@ -62,7 +66,7 @@ void run_ParseEAs(){
 	  double etaLow=ptRegions[i][0];
 	  double etaHigh=ptRegions[i][1];
 	  cout <<etaLow<<" < eta < "<<etaHigh<<endl;
-	  t.CutBasedID(i,etaLow,etaHigh,EAhist);
+	  t.CutBasedID(i,etaLow,etaHigh,EAhist,outDir);
   }
 
 
