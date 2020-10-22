@@ -24,7 +24,7 @@ TFormula *isoN_form = new TFormula(("isoNreg"+to_string(region)).c_str(),isoN_fo
 float ToE,Sie,IsoP,IsoC,IsoN,weighT,Ppt;
 
   ofstream myfile;
-  myfile.open("Cuts/99per.txt");
+  myfile.open(("ALL/99per"+to_string(region)+".txt").c_str());
 
 
   t_S->SetBranchAddress("Ppt",&Ppt);

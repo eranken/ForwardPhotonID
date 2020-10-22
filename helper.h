@@ -19,7 +19,6 @@
 #include <dirent.h>
 
 //#include </usr/include/eigen3/Eigen/Core>
-#include <Eigen/Dense>
 
 using namespace std;
 
@@ -144,26 +143,6 @@ public:
 };
 
 
-class VarianceCalculator
-{
-	private:
-		int N = 0;
-		vector<double> cen_;
-		vector< vector<double> > var_;
-	public:
-		VarianceCalculator(int size);
-		VarianceCalculator() : VarianceCalculator(0) {}
-
-		void Add(TH1D* hist);
-		void Add(const TMatrixD& vec);
-		void Add(const Eigen::MatrixXd& vec);
-		void Add(const vector<double>& vec);
-		TMatrixD GetMean() const; 
-		TH1D* GetMean(const string& name, const TH1D* hist = nullptr) const;
-		TMatrixD GetVar() const;
-		TH2D* GetVar(const string& name) const;
-		TH2D* GetCor(const string& name) const;
-};
 
 template<typename T> T stringtotype(string s)
 {   
@@ -189,40 +168,6 @@ class Bin
 
 bool operator<(const Bin& A, const Bin& B);
 
-template <typename MAT, typename VEC>
-double smooth(double x, double y, const VEC& xs, const VEC& ys, const MAT& zs, const MAT& ws, double sq)
-{
-	using namespace Eigen;
-	Matrix3d M = Matrix3d::Zero();
-	Vector3d V = Vector3d::Zero();
-
-	for(int i = 0 ; i < xs.size() ; ++i)
-	{
-		for(int j = 0 ; j < ys.size() ; ++j)
-		{
-			if(ws(i,j) == 0.) {continue;}
-
-			double d = exp(-0.5*((xs(i)-x)*(xs(i)-x) + (ys(j)-y)*(ys(j)-y))/sq);
-			double w = d/(ws(i,j)*ws(i,j));
-
-			M(0,0) += w * xs(i)*xs(i);
-			M(1,0) += w * ys(j)*xs(i);
-			M(2,0) += w * xs(i);
-			M(0,1) += w * ys(j)*xs(i);
-			M(1,1) += w * ys(j)*ys(j);
-			M(2,1) += w * ys(j);
-			M(0,2) += w * xs(i);
-			M(1,2) += w * ys(j);
-			M(2,2) += w;
-
-			V(0) += w * xs(i)*zs(i,j);
-			V(1) += w * ys(j)*zs(i,j);
-			V(2) += w * zs(i,j);
-		}
-	}
-	Vector3d R = M.partialPivLu().solve(V);
-	return R(0)*x + R(1)*y + R(2);
-}
 
 template <typename VEC>
 double smooth(double x, const VEC& xs, const VEC& ys, const VEC& ws, double sq)

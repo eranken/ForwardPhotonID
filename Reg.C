@@ -11,10 +11,12 @@
 #include "TSystem.h"
 #include "TROOT.h"
 
+#include "helper.cc"
+
 #include "TMVA/GeneticAlgorithm.h"
 #include "TMVA/GeneticFitter.h"
 #include "TMVA/IFitterTarget.h"
-
+#include "TMVA/DataLoader.h"
 //#include "TMVARegGui.C"
 #include "TMVA/Tools.h"
 #include "TMVA/Factory.h"
@@ -23,19 +25,6 @@ using namespace TMVA;
 
 
 
-string string_replace(const string& in, const vector<string>& patterns, const string& replacement)
-{
-        vector<string> ss = string_split(in, patterns);
-        if(string_startswith(in, patterns) != -1)
-        {
-                return replacement + string_join(ss, replacement);
-        }
-        if(string_endswith(in, patterns) != -1)
-        {
-                return string_join(ss, replacement)+replacement;
-        }
-        return string_join(ss, replacement);
-}
 
 void Reg(){
 	int region = 0;
@@ -44,22 +33,21 @@ void Reg(){
 	ifstream isoNfile;
 	isoPfile.open(("HPT/isoP"+to_string(region)+".txt"));
 	isoNfile.open(("HPT/isoN"+to_string(region)+".txt"));
-	TString isoP_formstring_x;
-	TString isoN_formstring_x;
+	string isoP_formstring_x;
+	string isoN_formstring_x;
 	isoPfile>>isoP_formstring_x;
 	isoNfile>>isoN_formstring_x;
 	vector<string> justx{"x"};
 	string phoPt = "Ppt";
 
-	String isoP_formstring_ppt = string_replace(isoP_formstring_x. justx, phoPt);
-	String isoN_formstring_ppt = string_replace(isoN_formstring_x. justx, phoPt);
+	string isoP_formstring_ppt = string_replace(isoP_formstring_x, justx, phoPt);
+	string isoN_formstring_ppt = string_replace(isoN_formstring_x, justx, phoPt);
 
 	cout<<isoP_formstring_x<<endl;
 	cout<<isoP_formstring_ppt<<endl;
 	cout<<isoN_formstring_x<<endl;
 	cout<<isoN_formstring_ppt<<endl;
 
-	return;
 
   TMVA::Tools::Instance();
   std::cout << "==> Start TMVARegression" << std::endl;
@@ -89,11 +77,11 @@ void Reg(){
   TMVA::Factory *factory = new TMVA::Factory( "TMVAClassification", outputFile,
 					      "!V:!Silent:Color:DrawProgressBar" );
   //Declaring Input Variables
-  dataloader = TMVA.DataLoader("dataset")
+  auto dataloader = new TMVA::DataLoader("dataset");
   dataloader->AddVariable( "Sieie",'F');
   dataloader->AddVariable( "isoC",'F' );
-  dataloader->AddVariable( "(isoN-(0.0143*Ppt+0.000017*Ppt*Ppt) > 0 ) ? isoN-(0.0143*Ppt+0.000017*Ppt*Ppt) : 0.0 ",'F' );
-  dataloader->AddVariable( "(isoP-0.0046*Ppt > 0 ) ? isoP-0.0046*Ppt : 0.0 ",'F' );
+  dataloader->AddVariable( ("(isoN-"+isoN_formstring_ppt+" > 0 ) ? "+isoN_formstring_ppt+" : 0.0 ").c_str(),'F' );
+  dataloader->AddVariable( ("("+isoP_formstring_ppt+" > 0 ) ? "+isoP_formstring_ppt+" : 0.0 ").c_str(),'F' );
 
   //factory->AddVariable( "(isoN-(0.014*Ppt+0.000019*Ppt*Ppt) > 0 ) ? isoN-(0.014*Ppt+0.000019*Ppt*Ppt) : 0.0 ",'F' );
   //factory->AddVariable( "(isoP-0.0053*Ppt > 0 ) ? isoP-0.0053*Ppt : 0.0 ",'F' );
@@ -104,7 +92,7 @@ void Reg(){
   //TString fname = "../../CutTMVABarrel90.root";
   TString fname = "/afs/cern.ch/work/e/eranken/private/space/CMSSW_9_4_13/src/PhotonIdTuning/merged/AllPV/PF/Trainner/CutTMVABarrel90_test.root";
 
-  input = TFile::Open( fname );
+ TFile* input = new TFile( fname ,"READ");
 
   // --- Register the regression tree
   TTree *signal = (TTree*)input->Get("t_S");
