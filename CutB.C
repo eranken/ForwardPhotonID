@@ -4,10 +4,32 @@
 #include <TStyle.h>
 #include <TCanvas.h>
 
-void CutID::CutBasedID(int reg, double etaLow, double etaHigh, const TH2D* EAhist, string outDir){
+void CutID::CutBasedID(int reg, double etaLow, double etaHigh, const TH2D* EAhist, string mode){
 
   TFile *f1;
-  f1 =  new TFile((outDir+"/CutTMVAregion"+to_string(reg)+".root").c_str(),"recreate");
+  f1 =  new TFile((mode+"/CutTMVAregion"+to_string(reg)+".root").c_str(),"recreate");
+
+  TFormula isoP_form;
+  TFormula isoN_form;
+
+  if (mode!="HPT") {
+	ifstream isoPfile;
+  	ifstream isoNfile;
+  	isoPfile.open(("HPT/isoP"+to_string(region)+".txt"));
+  	isoNfile.open(("HPT/isoN"+to_string(region)+".txt"));
+  	TString isoP_formstring;
+  	TString isoN_formstring;
+  	isoPfile>>isoP_formstring;
+  	isoNfile>>isoN_formstring;
+
+  	cout<<isoP_formstring<<endl;
+  	cout<<isoN_formstring<<endl;
+
+	isoP_form = TFormula(("isoPreg"+to_string(region)).c_str(),isoP_formstring);
+	isoN_form = TFormula(("isoNreg"+to_string(region)).c_str(),isoN_formstring);
+
+  }
+
 
   TTree *t_S = new TTree("t_S","CUT NEEDS THIS  ");
   TTree *t_B = new TTree("t_B","CUT NEEDS THIS ");
@@ -169,6 +191,11 @@ void CutID::CutBasedID(int reg, double etaLow, double etaHigh, const TH2D* EAhis
     PhI = max( PhI - Rh*EAph,0.0);
     ChgI = max( ChgI - Rh*EAch,0.0);
     NeuI = max( NeuI - Rh*EAneu,0.0);
+
+	if (mode!="HPT") {
+		PhI = max( isoP_form.Eval(gedPhPt),0.0);
+		NeuI = max( isoN_form.Eval(gedPhPt),0.0);
+	}
 
 
     //EOF THE ISOLATION CALCULATION
