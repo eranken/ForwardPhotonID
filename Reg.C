@@ -25,7 +25,6 @@ using namespace TMVA;
 
 
 
-
 void Reg(){
 	int region = 0;
 
@@ -53,7 +52,7 @@ void Reg(){
   std::cout << "==> Start TMVARegression" << std::endl;
 
   ifstream myfile;
-  myfile.open(("ALL/99per"+to_string(region)+".txt").c_str());
+  myfile.open(("99per"+to_string(region)+".txt").c_str());
 
   ostringstream xcS,xcH,xcP,xcC,xcN;
   double xS,xC,xN,xP;
@@ -76,12 +75,17 @@ void Reg(){
   //Declaring the factory
   TMVA::Factory *factory = new TMVA::Factory( "TMVAClassification", outputFile,
 					      "!V:!Silent:Color:DrawProgressBar" );
+  factory->SetVerbose(true);
   //Declaring Input Variables
   auto dataloader = new TMVA::DataLoader("dataset");
   dataloader->AddVariable( "Sieie",'F');
   dataloader->AddVariable( "isoC",'F' );
-  dataloader->AddVariable( ("(isoN-"+isoN_formstring_ppt+" > 0 ) ? "+isoN_formstring_ppt+" : 0.0 ").c_str(),'F' );
-  dataloader->AddVariable( ("("+isoP_formstring_ppt+" > 0 ) ? "+isoP_formstring_ppt+" : 0.0 ").c_str(),'F' );
+  //dataloader->AddVariable( ("max(isoN-"+isoN_formstring_ppt+", 0.)").c_str(),'F' );
+  dataloader->AddVariable( "isoN",'F' );
+  //dataloader->AddVariable( ("(isoN-"+isoN_formstring_ppt+" > 0 ) ? "+isoN_formstring_ppt+" : 0.0 ").c_str(),'F' );
+  //dataloader->AddVariable( ("max("+isoP_formstring_ppt+", 0.)").c_str(),'F' );
+  dataloader->AddVariable( "isoP",'F' );
+  //dataloader->AddVariable( ("("+isoP_formstring_ppt+" > 0 ) ? "+isoP_formstring_ppt+" : 0.0 ").c_str(),'F' );
 
   //factory->AddVariable( "(isoN-(0.014*Ppt+0.000019*Ppt*Ppt) > 0 ) ? isoN-(0.014*Ppt+0.000019*Ppt*Ppt) : 0.0 ",'F' );
   //factory->AddVariable( "(isoP-0.0053*Ppt > 0 ) ? isoP-0.0053*Ppt : 0.0 ",'F' );
@@ -136,9 +140,13 @@ void Reg(){
    // methodOptions +=":CutRangeMin[4]=-1.0";
 
    //************
+   cout<<"gonna book the method"<<endl;
    factory->BookMethod(dataloader, TMVA::Types::kCuts,methodName,methodOptions);
+   cout<<"gonna train all methods"<<endl;
    factory->TrainAllMethods();
+   cout<<"gonna test all methods"<<endl;
    factory->TestAllMethods();
+   cout<<"gonna evaluate all methods"<<endl;
    factory->EvaluateAllMethods();
 
    // --------------------------------------------------------------
@@ -150,5 +158,4 @@ void Reg(){
    std::cout << "==> Wrote root file: " << outputFile->GetName() << std::endl;
    std::cout << "==> TMVARegression is done!" << std::endl;
    delete factory;
-
 }
