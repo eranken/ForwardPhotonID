@@ -15,8 +15,8 @@ void CutID::CutBasedID(int reg, double etaLow, double etaHigh, const TH2D* EAhis
   if (mode!="HPT") {
 	ifstream isoPfile;
   	ifstream isoNfile;
-  	isoPfile.open(("HPT/isoP"+to_string(region)+".txt"));
-  	isoNfile.open(("HPT/isoN"+to_string(region)+".txt"));
+  	isoPfile.open(("HPT/isoP"+to_string(reg)+".txt"));
+  	isoNfile.open(("HPT/isoN"+to_string(reg)+".txt"));
   	TString isoP_formstring;
   	TString isoN_formstring;
   	isoPfile>>isoP_formstring;
@@ -25,8 +25,8 @@ void CutID::CutBasedID(int reg, double etaLow, double etaHigh, const TH2D* EAhis
   	cout<<isoP_formstring<<endl;
   	cout<<isoN_formstring<<endl;
 
-	isoP_form = TFormula(("isoPreg"+to_string(region)).c_str(),isoP_formstring);
-	isoN_form = TFormula(("isoNreg"+to_string(region)).c_str(),isoN_formstring);
+	isoP_form = TFormula(("isoPreg"+to_string(reg)).c_str(),isoP_formstring);
+	isoN_form = TFormula(("isoNreg"+to_string(reg)).c_str(),isoN_formstring);
 
   }
 

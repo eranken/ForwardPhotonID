@@ -17,7 +17,7 @@ void run_ParseEAs(){
 
 //  gSystem->CompileMacro("CutID.C");
 	//string mode = "flatpt";
-	string mode = "ALL";
+	string mode = "TrainIn";
 
 	string inputFilePath;
 	if (mode=="HPT") {

@@ -26,7 +26,7 @@ using namespace TMVA;
 
 
 void Reg(){
-	int region = 0;
+	int region= 1;
 
 	ifstream isoPfile;
 	ifstream isoNfile;
@@ -94,9 +94,9 @@ void Reg(){
   dataloader->AddSpectator( "ToE",'F' );
 
   //TString fname = "../../CutTMVABarrel90.root";
-  TString fname = "/afs/cern.ch/work/e/eranken/private/space/CMSSW_9_4_13/src/PhotonIdTuning/merged/AllPV/PF/Trainner/CutTMVABarrel90_test.root";
+  string fname = "/afs/cern.ch/work/e/eranken/private/space/CMSSW_9_4_13/src/ForwardPhotonID/TrainIn/CutTMVAregion"+to_string(region)+".root";
 
- TFile* input = new TFile( fname ,"READ");
+ TFile* input = new TFile( fname.c_str() ,"READ");
 
   // --- Register the regression tree
   TTree *signal = (TTree*)input->Get("t_S");
@@ -114,8 +114,11 @@ void Reg(){
    TCut mycutb ="Ppt>15   && Ppt < 200 && ToE < 0.05";
    //factory->PrepareTrainingAndTestTree(mycuts,mycutb,"");
    //factory->PrepareTrainingAndTestTree(mycuts,mycutb,"nTrain_Signal=300000:nTrain_Background=300000:nTest_Signal=300000:nTest_Background=300000");
-   dataloader->PrepareTrainingAndTestTree(mycuts,mycutb,"nTrain_Signal=5000000:nTrain_Background=5000000:nTest_Signal=5000000:nTest_Background=5000000");
-   //factory->PrepareTrainingAndTestTree(mycuts,mycutb,"nTrain_Signal=1000:nTrain_Background=1000:nTest_Signal=1000:nTest_Background=1000");
+//original:::
+//  dataloader->PrepareTrainingAndTestTree(mycuts,mycutb,"nTrain_Signal=5000000:nTrain_Background=5000000:nTest_Signal=5000000:nTest_Background=5000000");
+
+  dataloader->PrepareTrainingAndTestTree(mycuts,mycutb,"nTrain_Signal=50000:nTrain_Background=50000:nTest_Signal=50000:nTest_Background=50000");
+ //factory->PrepareTrainingAndTestTree(mycuts,mycutb,"nTrain_Signal=1000:nTrain_Background=1000:nTest_Signal=1000:nTest_Background=1000");
    //nTrain_Signal=3000:nTrain_Background=6000:nTest_Signal=3000:nTest_Background=3000");
 
    cout<<"pre weighT"<<endl;
