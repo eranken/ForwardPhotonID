@@ -26,7 +26,7 @@ using namespace TMVA;
 
 
 void Reg(){
-	int region= 1;
+	int region= 2;
 
 	ifstream isoPfile;
 	ifstream isoNfile;
@@ -58,15 +58,17 @@ void Reg(){
   double xS,xC,xN,xP;
 
   if(myfile.is_open()){
-    while(!myfile.eof()){
+   ///// while(!myfile.eof()){
       myfile>>xS>>xC>>xN>>xP;
-    }
+  cout<<" XCNP "<<xS<<", "<<xC<<", "<<xN<<", "<<xP<<endl;
+   ///// }
   }
 
   xcS<<xS;
   xcC<<xC;
   xcN<<xN;
   xcP<<xP;
+  
 
   //Output file
   TString outfileName( "Loose_w_BAR_scaled.root" );
@@ -117,7 +119,7 @@ void Reg(){
 //original:::
 //  dataloader->PrepareTrainingAndTestTree(mycuts,mycutb,"nTrain_Signal=5000000:nTrain_Background=5000000:nTest_Signal=5000000:nTest_Background=5000000");
 
-  dataloader->PrepareTrainingAndTestTree(mycuts,mycutb,"nTrain_Signal=50000:nTrain_Background=50000:nTest_Signal=50000:nTest_Background=50000");
+  dataloader->PrepareTrainingAndTestTree(mycuts,mycutb,"nTrain_Signal=10000:nTrain_Background=10000:nTest_Signal=10000:nTest_Background=100000");
  //factory->PrepareTrainingAndTestTree(mycuts,mycutb,"nTrain_Signal=1000:nTrain_Background=1000:nTest_Signal=1000:nTest_Background=1000");
    //nTrain_Signal=3000:nTrain_Background=6000:nTest_Signal=3000:nTest_Background=3000");
 
@@ -128,18 +130,18 @@ void Reg(){
 
    TString methodName = "Cut_Loose_r";
    TString methodOptions ="!H:!V:FitMethod=GA:EffMethod=EffSEl";
-   methodOptions +=":VarProp[0]=FMin:VarProp[1]=FMin:VarProp[2]=FMin:VarProp[3]=FMin";
-   //   methodOptions +=":VarProp[0]=FMax:VarProp[1]=FMax:VarProp[2]=FMax:VarProp[3]=FMax";
-
+//   methodOptions +=":VarProp[0]=FMin:VarProp[1]=FMin:VarProp[2]=FMin:VarProp[3]=FMin";
+//  methodOptions +=":VarProp[0]=FMax:VarProp[1]=FMax:VarProp[2]=FMax:VarProp[3]=FMax";
+//old cut method
    methodOptions +=":CutRangeMax[0]="+xcS.str();
    methodOptions +=":CutRangeMax[1]="+xcC.str();
    methodOptions +=":CutRangeMax[2]="+xcN.str();
    methodOptions +=":CutRangeMax[3]="+xcP.str();
    //   methodOptions +=":CutRangeMax[4]="+xcP.str(); //!!!!!!!!!!
-   //   methodOptions +=":CutRangeMin[0]=0.0";
-   //methodOptions +=":CutRangeMin[1]=-5.0";
-   //methodOptions +=":CutRangeMin[2]=-5.0";
-   //methodOptions +=":CutRangeMin[3]=-5.0";
+      methodOptions +=":CutRangeMin[0]=0.0";
+   methodOptions +=":CutRangeMin[1]=-5.0";
+   methodOptions +=":CutRangeMin[2]=-5.0";
+   methodOptions +=":CutRangeMin[3]=-5.0";
    // methodOptions +=":CutRangeMin[4]=-1.0";
 
    //************

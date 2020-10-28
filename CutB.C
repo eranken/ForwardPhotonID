@@ -193,8 +193,8 @@ void CutID::CutBasedID(int reg, double etaLow, double etaHigh, const TH2D* EAhis
     NeuI = max( NeuI - Rh*EAneu,0.0);
 
 	if (mode!="HPT") {
-		PhI = max( PhI- isoP_form.Eval(gedPhPt),0.0);
-		NeuI = max( NeuI- isoN_form.Eval(gedPhPt),0.0);
+		PhI = max( PhI +isoP_form.Eval(0.) -isoP_form.Eval(gedPhPt),0.0);
+		NeuI = max( NeuI +isoN_form.Eval(0.) -isoN_form.Eval(gedPhPt),0.0);
 	}
 
 

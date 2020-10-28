@@ -2,7 +2,7 @@
 #include <TSystem.h>
 #include "CutID.C"
 
-void run_ParseEAs(){
+void runMakeInputs(){
   //-----------------Macro Describtion----------------------------------------------------------
   //
   // This macro wraps the whole procedure in a single shell.

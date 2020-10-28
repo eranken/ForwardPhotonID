@@ -4,8 +4,11 @@
 
 void scr99(int region){
 
-  TFile *f1 = new TFile(("ALL/CutTMVAregion"+to_string(region)+".root").c_str());
+cout<<"doing region " << region<<endl;
+	TFile *f1 = new TFile(("TrainIn/CutTMVAregion"+to_string(region)+".root").c_str());
   TTree *t_S = (TTree*)f1->Get("t_S");
+
+//this loads the isoP/isoN Pt formulas but not needed now  
 ifstream isoPfile;
 ifstream isoNfile;
 isoPfile.open(("HPT/isoP"+to_string(region)+".txt"));
@@ -24,7 +27,7 @@ TFormula *isoN_form = new TFormula(("isoNreg"+to_string(region)).c_str(),isoN_fo
 float ToE,Sie,IsoP,IsoC,IsoN,weighT,Ppt;
 
   ofstream myfile;
-  myfile.open(("ALL/99per"+to_string(region)+".txt").c_str());
+  myfile.open(("TrainIn/99per"+to_string(region)+".txt").c_str());
 
 
   t_S->SetBranchAddress("Ppt",&Ppt);
@@ -35,14 +38,14 @@ float ToE,Sie,IsoP,IsoC,IsoN,weighT,Ppt;
   t_S->SetBranchAddress("isoN",&IsoN);
   //  t_S->SetBranchAddress("weighT",&weighT);
 
-  weighT = 1;
+  weighT = 1.;
 
-  TH1F *HS = new TH1F("HS","sieie ",10000,0,0.5);
-  TH1F *HH = new TH1F("HH","h over e ",10000,0,0.5);
-  TH1F *HP = new TH1F("HP","photon  iso ",10000,0,205);
-  TH1F *HC = new TH1F("HC","charge  iso ",10000,0,255);
-  TH1F *HN = new TH1F("HN","neutral iso ",10000,0,75);
-  TH1F *W = new TH1F("W","weights  ",3,0,3);
+  TH1F *HS = new TH1F(("HS"+to_string(region)).c_str(),"sieie ",10000,0,0.5);
+  TH1F *HH = new TH1F(("HH"+to_string(region)).c_str(),"h over e ",10000,0,0.5);
+  TH1F *HP = new TH1F(("HP"+to_string(region)).c_str(),"photon  iso ",10000,0,205);
+  TH1F *HC = new TH1F(("HC"+to_string(region)).c_str(),"charge  iso ",10000,0,255);
+  TH1F *HN = new TH1F(("HN"+to_string(region)).c_str(),"neutral iso ",10000,0,75);
+  TH1F *W = new TH1F(("W"+to_string(region)).c_str(),"weights  ",3,0,3);
 
   // cout<<t_S->GetEntries()<<endl;
 
@@ -73,8 +76,10 @@ float ToE,Sie,IsoP,IsoC,IsoN,weighT,Ppt;
     HS->Fill(Sie,weighT);
 
 
-    double isoph = TMath::Max(0.0, isoP_form->Eval(Ppt));
-    double isoneu = TMath::Max(0.0, isoN_form->Eval(Ppt));
+    //double isoph = TMath::Max(0.0, IsoP-isoP_form->Eval(Ppt));
+    double isoph = IsoP;
+    //double isoneu = TMath::Max(0.0, IsoN-isoN_form->Eval(Ppt));
+    double isoneu = IsoN;
 
     //double isoph = TMath::Max(IsoP - 0.0034*Ppt,0.0);
     //double isoneu = TMath::Max(IsoN - (0.0139*Ppt+0.000025*Ppt*Ppt),0.0);
@@ -127,6 +132,7 @@ float ToE,Sie,IsoP,IsoC,IsoN,weighT,Ppt;
   double toe_b = 0;
 
   for(int i = 1 ; i <= 10000; i++){
+	  
     double xcs = (i*0.5)/10000;
     double xch = (i*0.5)/10000;
     double xcp = (i*205.0)/10000;
@@ -140,8 +146,15 @@ float ToE,Sie,IsoP,IsoC,IsoN,weighT,Ppt;
    neu_b += HN->GetBinContent(i);
    chg_b += HC->GetBinContent(i);
 
+if (i>9900) {	
+	
 
-   int bin = HS->FindBin(xcs);
+	  cout<<"bin "<<i<<endl;
+   cout<<"SHPNC:W bincenter / integrated content"<<endl;
+cout<<xcs<<", "<<xch<<", "<<xcp<<", "<<xcc<<", "<<xcn<<", "<<endl;  	
+	cout<<sie_b<<", "<<toe_b<<", "<<pho_b<<", "<< neu_b<<", "<<chg_b <<" : "<<W<<endl;
+	}
+	int bin = HS->FindBin(xcs);
    //cout<<i<<" "<<(HH->Integral(1,i))/(HH->Integral()*1.0)<<" "<<(HH->Integral(1,i))/(totS*1.0)<<endl;
 
 
@@ -204,7 +217,7 @@ float ToE,Sie,IsoP,IsoC,IsoN,weighT,Ppt;
   cout<<"IsoC :"<<xccf<<endl;
   cout<<"IsoN :"<<xcnf<<endl;
   */
-  TFile *f2 = new TFile(("ALL/Vars"+to_string(region)+".root").c_str(),"recreate");
+  TFile *f2 = new TFile(("TrainIn/Vars"+to_string(region)+".root").c_str(),"recreate");
   HS->Write();
   HH->Write();
   HP->Write();
