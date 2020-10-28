@@ -1,7 +1,8 @@
 import ROOT as r
 from ROOT import TFile, TH1D, TH2D, TCanvas, TLegend, TTree, gPad, gStyle, gROOT
 
-region = '0'
+numevents=10000000
+region = '2'
 
 fi = TFile('TrainIn/CutTMVAregion'+region+'.root', 'READ')
 
@@ -22,7 +23,7 @@ histHOE_B=TH1D('HOE_Bhist','HOE_B',100,0,0.1)
 histSieie_B=TH1D('Sieie_Bhist','Sieie_B',100,0,0.06)
 
 # for entryNum in range(0,t_S.GetEntries()):
-for entryNum in range(0,1000000):
+for entryNum in range(0,numevents):
 	t_S.GetEntry(entryNum)
 	eta_S = getattr(t_S,"Peta")
 	isoP_S = getattr(t_S ,"isoP")
@@ -38,7 +39,7 @@ for entryNum in range(0,1000000):
 	histHOE_S.Fill(HOE_S,weight_S)
 	histSieie_S.Fill(Sieie_S,weight_S)
 
-for entryNum in range(0,1000000):
+for entryNum in range(0,numevents):
 	t_B.GetEntry(entryNum)
 	eta_B = getattr(t_B,"Peta")
 	isoP_B = getattr(t_B ,"isoP")
@@ -62,7 +63,7 @@ histC_S.SetFillColor(r.kRed)
 histC_B.Draw('hist same')
 histC_B.SetLineColor(r.kBlue)
 cC.SetLogy()
-cC.SaveAs('isoC_lowEta.pdf')
+cC.SaveAs('tests/isoC_lowEta'+region+'.pdf')
 
 cP = TCanvas()
 histP_S.Draw('hist')
@@ -71,7 +72,7 @@ histP_S.SetFillColor(r.kRed)
 cP.SetLogy()
 histP_B.Draw('hist same')
 histP_B.SetLineColor(r.kBlue)
-cP.SaveAs('isoP_lowEta.pdf')
+cP.SaveAs('tests/isoP_lowEta'+region+'.pdf')
 
 cN = TCanvas()
 histN_S.Draw('hist')
@@ -80,7 +81,7 @@ histN_S.SetFillColor(r.kRed)
 cN.SetLogy()
 histN_B.Draw('hist same')
 histN_B.SetLineColor(r.kBlue)
-cN.SaveAs('isoN_lowEta.pdf')
+cN.SaveAs('tests/isoN_lowEta'+region+'.pdf')
 
 cHOE = TCanvas()
 histHOE_S.Draw('hist')
@@ -89,7 +90,7 @@ histHOE_S.SetFillColor(r.kRed)
 cHOE.SetLogy()
 histHOE_B.Draw('hist same')
 histHOE_B.SetLineColor(r.kBlue)
-cHOE.SaveAs('HoE_lowEta.pdf')
+cHOE.SaveAs('tests/HoE_lowEta'+region+'.pdf')
 
 cSieie = TCanvas()
 histSieie_S.Draw('hist')
@@ -97,4 +98,4 @@ histSieie_S.SetLineColor(r.kRed)
 histSieie_S.SetFillColor(r.kRed)
 histSieie_B.Draw('hist same')
 histSieie_B.SetLineColor(r.kBlue)
-cSieie.SaveAs('Sieie_lowEta.pdf')
+cSieie.SaveAs('tests/Sieie_lowEta'+region+'.pdf')
