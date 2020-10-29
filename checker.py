@@ -1,8 +1,10 @@
 import ROOT as r
 from ROOT import TFile, TH1D, TH2D, TCanvas, TLegend, TTree, gPad, gStyle, gROOT
 
-numevents=1000000
-region = 2
+gROOT.SetBatch(True)
+
+numevents=10000000
+region = 0
 
 fi = TFile('TrainIn/CutTMVAregion'+str(region)+'.root', 'READ')
 
@@ -22,14 +24,16 @@ histN_B=TH1D('IsoN_Bhist','IsoN_B region '+str(region),200,0,6)
 histHOE_B=TH1D('HOE_Bhist','HOE_B region '+str(region),200,0,0.1)
 histSieie_B=TH1D('Sieie_Bhist','Sieie_B region '+str(region),200,0,0.06)
 
-# for entryNum in range(0,t_S.GetEntries()):
-for entryNum in range(0,numevents):
+for entryNum in range(0,t_S.GetEntries()):
+#for entryNum in range(0,numevents):
 	t_S.GetEntry(entryNum)
 	eta_S = getattr(t_S,"Peta")
 	isoP_S = getattr(t_S ,"isoP")
 	isoC_S = getattr(t_S ,"isoC")
 	isoN_S = getattr(t_S ,"isoN")
 	weight_S = getattr(t_S ,"weighT")
+	if(weight_S<0):
+		print "negative weight S !!!!!!!"
 	histC_S.Fill(isoC_S,weight_S)
 	histN_S.Fill(isoN_S,weight_S)
 	histP_S.Fill(isoP_S,weight_S)
@@ -39,13 +43,16 @@ for entryNum in range(0,numevents):
 	histHOE_S.Fill(HOE_S,weight_S)
 	histSieie_S.Fill(Sieie_S,weight_S)
 
-for entryNum in range(0,numevents):
+#for entryNum in range(0,numevents):
+for entryNum in range(0,t_B.GetEntries()):
 	t_B.GetEntry(entryNum)
 	eta_B = getattr(t_B,"Peta")
 	isoP_B = getattr(t_B ,"isoP")
 	isoC_B = getattr(t_B ,"isoC")
 	isoN_B = getattr(t_B ,"isoN")
 	weight_B = getattr(t_B ,"weighT")
+	if(weight_B<0):
+		print "negative weight B !!!!!!!" 
 	histC_B.Fill(isoC_B,weight_B)
 	histN_B.Fill(isoN_B,weight_B)
 	histP_B.Fill(isoP_B,weight_B)
