@@ -16,7 +16,7 @@ void runMakeInputs(){
   //--------------------------------------------------------------------------------------------
 
 //  gSystem->CompileMacro("CutID.C");
-	//string mode = "flatpt";
+	//string mode = "HPT";
 	string mode = "TrainIn";
 
 	string inputFilePath;
@@ -27,8 +27,8 @@ void runMakeInputs(){
 	  vector<vector<double>> ptRegions;
 	  ptRegions.push_back({0.,1.4442});
 	  ptRegions.push_back({1.566,2.5});
-	  ptRegions.push_back({2.5,2.85});
-	  ptRegions.push_back({2.85,3.});
+	  ptRegions.push_back({2.5,2.87});
+	  //ptRegions.push_back({2.87,3.});
 	CutID t(0,inputFilePath);
 
 

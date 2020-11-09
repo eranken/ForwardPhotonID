@@ -17,7 +17,7 @@
 #include <ContourBuilder.C>
 */
 
-void runCont(){
+void runEA(){
   //-----------------Macro Describtion----------------------------------------------------------
   //
   // This macro wraps the whole procedure in a single shell.

@@ -25,8 +25,8 @@ using namespace TMVA;
 
 
 
-void Reg(){
-	int region= 2;
+void regtest(){
+	int region= 0;
 
 	ifstream isoPfile;
 	ifstream isoNfile;
@@ -76,25 +76,22 @@ void Reg(){
 
   //Declaring the factory
   TMVA::Factory *factory = new TMVA::Factory( "TMVAClassification", outputFile,
-					      "!V:!Silent:Color:DrawProgressBar" );
+					      "V:Color:DrawProgressBar" );
   factory->SetVerbose(true);
   //Declaring Input Variables
   auto dataloader = new TMVA::DataLoader("dataset");
   dataloader->AddVariable( "Sieie",'F');
-  dataloader->AddVariable( "isoC",'F' );
-  //dataloader->AddVariable( ("max(isoN-"+isoN_formstring_ppt+", 0.)").c_str(),'F' );
-  dataloader->AddVariable( "isoN",'F' );
-  //dataloader->AddVariable( ("(isoN-"+isoN_formstring_ppt+" > 0 ) ? "+isoN_formstring_ppt+" : 0.0 ").c_str(),'F' );
-  //dataloader->AddVariable( ("max("+isoP_formstring_ppt+", 0.)").c_str(),'F' );
-  dataloader->AddVariable( "isoP",'F' );
-  //dataloader->AddVariable( ("("+isoP_formstring_ppt+" > 0 ) ? "+isoP_formstring_ppt+" : 0.0 ").c_str(),'F' );
+ // dataloader->AddVariable( "isoC",'F' );
+  //dataloader->AddVariable( "isoN",'F' );
+//  dataloader->AddVariable( "isoP",'F' );
 
   //factory->AddVariable( "(isoN-(0.014*Ppt+0.000019*Ppt*Ppt) > 0 ) ? isoN-(0.014*Ppt+0.000019*Ppt*Ppt) : 0.0 ",'F' );
   //factory->AddVariable( "(isoP-0.0053*Ppt > 0 ) ? isoP-0.0053*Ppt : 0.0 ",'F' );
 
   dataloader->AddSpectator( "Ppt",'F' );
-  dataloader->AddSpectator( "ToE",'F' );
+  dataloader->AddVariable( "ToE",'F' );
 
+  dataloader->AddVariable( "isoC",'F' );
   //TString fname = "../../CutTMVABarrel90.root";
   string fname = "/afs/cern.ch/work/e/eranken/private/space/CMSSW_9_4_13/src/ForwardPhotonID/TrainIn/CutTMVAregion"+to_string(region)+".root";
 
@@ -119,7 +116,7 @@ void Reg(){
 //original:::
 //  dataloader->PrepareTrainingAndTestTree(mycuts,mycutb,"nTrain_Signal=5000000:nTrain_Background=5000000:nTest_Signal=5000000:nTest_Background=5000000");
 
-  dataloader->PrepareTrainingAndTestTree(mycuts,mycutb,"nTrain_Signal=500000:nTrain_Background=500000:nTest_Signal=500000:nTest_Background=500000");
+  dataloader->PrepareTrainingAndTestTree(mycuts,mycutb,"nTrain_Signal=1000000:nTrain_Background=1000000:nTest_Signal=1000000:nTest_Background=1000000");
  //factory->PrepareTrainingAndTestTree(mycuts,mycutb,"nTrain_Signal=1000:nTrain_Background=1000:nTest_Signal=1000:nTest_Background=1000");
    //nTrain_Signal=3000:nTrain_Background=6000:nTest_Signal=3000:nTest_Background=3000");
 
@@ -129,7 +126,7 @@ void Reg(){
    cout<<"post weighT"<< endl;
 
    TString methodName = "Cut_Loose_r";
-   TString methodOptions ="!H:V:FitMethod=GA:EffMethod=EffSel";
+   TString methodOptions ="H:V:FitMethod=GA:EffMethod=EffSel";
 //   methodOptions +=":VarProp[0]=FMin:VarProp[1]=FMin:VarProp[2]=FMin:VarProp[3]=FMin";
 //  methodOptions +=":VarProp[0]=FMax:VarProp[1]=FMax:VarProp[2]=FMax:VarProp[3]=FMax";
 //old cut method
@@ -138,20 +135,23 @@ void Reg(){
 //   methodOptions +=":CutRangeMax[2]="+xcN.str();
 //   methodOptions +=":CutRangeMax[3]="+xcP.str();
 
-   methodOptions +=":CutRangeMax[0]=0.5";
-   methodOptions +=":CutRangeMax[1]=10.";
-   methodOptions +=":CutRangeMax[2]=10.";
-   methodOptions +=":CutRangeMax[3]=10.";
+     methodOptions +=":CutRangeMax[0]=0.5";
+     methodOptions +=":CutRangeMax[1]=0.5";
+     methodOptions +=":CutRangeMax[2]=10.";
+//  
+//   methodOptions +=":CutRangeMax[3]=10.";
 	   //   methodOptions +=":CutRangeMax[4]="+xcP.str(); //!!!!!!!!!!
 
-   methodOptions +=":CutRangeMin[0]=0.0";
+   methodOptions +=":CutRangeMin[0]=0.0"; 
    methodOptions +=":CutRangeMin[1]=0.0";
    methodOptions +=":CutRangeMin[2]=0.0";
-   methodOptions +=":CutRangeMin[3]=0.0";
+//   methodOptions +=":CutRangeMin[3]=0.0";
    // methodOptions +=":CutRangeMin[4]=-1.0";
 
 //   methodOptions +=":nTrain_Signal=10000:nTrain_Background=10000:nTest_Signal=10000:nTest_Background=100000";
    //************
+   methodOptions +=":popsize=800:steps=100";
+   
    cout<<"gonna book the method"<<endl;
    factory->BookMethod(dataloader, TMVA::Types::kCuts,methodName,methodOptions);
    cout<<"gonna train all methods"<<endl;
