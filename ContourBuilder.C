@@ -18,6 +18,8 @@ void ErrCalc1(TH1D *HIST,int binxn,double perc,double & X_val, double & errXL,do
 
 void ContourBuilder(string &inFilePath_, int bin,double minEta,double maxEta,double & in,double & ein,double & ip,double & eip,double  & ic,double  & eic){
 
+
+
   ostringstream fword;
   fword << bin;
   string b_name = fword.str();
@@ -26,6 +28,8 @@ void ContourBuilder(string &inFilePath_, int bin,double minEta,double maxEta,dou
   string PDFNamestr = outDir+"EA_"+b_name+".pdf";
   char const *PNGName = Pngg.c_str();
   char const *PDFName = PDFNamestr.c_str();
+  string outname = "EAout/EA_"+b_name+".root";
+  TFile *outRoot=new TFile(outname.c_str(),"recreate");
 
 //TFile *f1 = new TFile("../../../../MYntupleProc/output/S17pytGjet.root");
   TFile *f1 = new TFile(inFilePath_.c_str());
@@ -71,6 +75,11 @@ void ContourBuilder(string &inFilePath_, int bin,double minEta,double maxEta,dou
   }
 
   cout<<"Builded the 2d HISTOGRAM"<<endl;
+
+  isoNrho->SetDirectory(outRoot);
+  isoPrho->SetDirectory(outRoot);
+  isoCrho->SetDirectory(outRoot);
+
   TH2F *hisN = (TH2F*) isoNrho->Clone();
   TH2F *hisP = (TH2F*) isoPrho->Clone();
   TH2F *hisC = (TH2F*) isoCrho->Clone();
@@ -241,6 +250,9 @@ void ContourBuilder(string &inFilePath_, int bin,double minEta,double maxEta,dou
 
   c3->SaveAs(PNGName);
   c3->SaveAs(PDFName);
+
+  outRoot->Write();
+  outRoot->Close();
 
 
 }
