@@ -100,10 +100,7 @@ void ContourBuilder(string &inFilePath_, int bin,double minEta,double maxEta,dou
     // double projPint = projP->Integral();
     double projPint = isoPrho_rel->Integral(i,i,1,isoNrho_rel->GetNbinsY());
 
-    cout<< projPint<<"--"<<endl;;
-
     double sumP = 0.;
-    cout<<sumP<<" ";
     double sumC = 0.;
     double sumN = 0.;
 
