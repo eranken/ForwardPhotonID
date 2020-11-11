@@ -46,7 +46,7 @@ void ContourBuilder(string &inFilePath_, int bin,double minEta,double maxEta,dou
   t1->SetBranchAddress("gedPhoIso",&iso_P);
   t1->SetBranchAddress("gedPhisPrompt",&isprmt);
   t1->SetBranchAddress("Rh",&rho);
-
+  t1->SetBranchAddress("NVtx",&nvtx);
 
 
 
@@ -65,6 +65,7 @@ void ContourBuilder(string &inFilePath_, int bin,double minEta,double maxEta,dou
     if(fabs(peta) < minEta ) continue;
     if(ppt < 15 ) continue;
     if(ppt > 200 ) continue;
+    if(nvtx < 4 ) continue;
 
 
 
