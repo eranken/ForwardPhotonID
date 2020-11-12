@@ -54,9 +54,9 @@ void ContourBuilder(string &inFilePath_, int bin,double minEta,double maxEta,dou
   TH2F *isoPrho = new TH2F("isoPrho","Iso Photon vs #rho",30,0,30,2000,0,200);
   TH2F *isoCrho = new TH2F("isoCrho","Iso Charge hadrons vs #rho",30,0,30,2000,0,200);
 
-  TH2F *isoNrho_rel = new TH2F("isoNrho_rel","Iso neutral hadrons vs #rho",30,0,30,800,0,200);
-  TH2F *isoPrho_rel = new TH2F("isoPrho_rel","Iso Photon vs #rho",30,0,30,800,0,200);
-  TH2F *isoCrho_rel = new TH2F("isoCrho_rel","Iso Charge hadrons vs #rho",30,0,30,800,0,200);
+  TH2F *isoNrho_rel = new TH2F("isoNrho_rel","Iso neutral hadrons vs #rho",30,0,30,1000,0,200);
+  TH2F *isoPrho_rel = new TH2F("isoPrho_rel","Iso Photon vs #rho",30,0,30,1000,0,200);
+  TH2F *isoCrho_rel = new TH2F("isoCrho_rel","Iso Charge hadrons vs #rho",30,0,30,1000,0,200);
 
 
   for(int i  = 0; i < t1->GetEntries();i++){
@@ -87,40 +87,40 @@ void ContourBuilder(string &inFilePath_, int bin,double minEta,double maxEta,dou
   cout<<"Builded the 2d HISTOGRAM"<<endl;
 
   for (size_t i = 1; i < isoNrho_rel->GetNbinsX()+1; i++) {
-    TH1D *projN = isoNrho_rel->ProjectionY("projN",i,i+1);
+    // TH1D *projN = isoNrho_rel->ProjectionY("projN",i,i+1);
 //    double projNint =(projN->Integral() == 0 ? projN->Integral() : 100000000000.);
     double projNint = isoNrho_rel->Integral(i,i,1,isoNrho_rel->GetNbinsY());
 
-    TH1D *projC = isoCrho_rel->ProjectionY("projC",i,i+1);
+    // TH1D *projC = isoCrho_rel->ProjectionY("projC",i,i+1);
 //    double projCint = (projC->Integral() == 0 ? projC->Integral() : 100000000000.);
     double projCint = isoCrho_rel->Integral(i,i,1,isoCrho_rel->GetNbinsY());
 
-    TH1D *projP = isoPrho_rel->ProjectionY("projP",i,i+1);
+    // TH1D *projP = isoPrho_rel->ProjectionY("projP",i,i+1);
 //    double projPint = (projP->Integral() == 0 ? projP->Integral() : 100000000000.);
     // double projPint = projP->Integral();
-    double projPint = isoPrho_rel->Integral(i,i,1,isoNrho_rel->GetNbinsY());
+    double projPint = isoPrho_rel->Integral(i,i,1,isoPrho_rel->GetNbinsY());
 
     double sumP = 0.;
     double sumC = 0.;
     double sumN = 0.;
 
-    for (size_t j = 1; j < isoNrho_rel->GetNbinsY()+1; j++) {
+    for (size_t j = isoNrho_rel->GetNbinsY(); j >0 ; j--) {
       sumN += isoNrho_rel->GetBinContent(i,j)/projNint;
       sumC += isoCrho_rel->GetBinContent(i,j)/projCint;
       sumP += isoPrho_rel->GetBinContent(i,j)/projPint;
 
-      if (sumN <0.95) {
-        isoNrho_rel->SetBinContent(i,j,1-sumN);
+      if (sumN >0.05) {
+        isoNrho_rel->SetBinContent(i,j,sumN);
       }
       else isoNrho_rel->SetBinContent(i,j,0.);
 
-      if (sumC <0.95) {
-        isoCrho_rel->SetBinContent(i,j,1-sumC);
+      if (sumC >0.05) {
+        isoCrho_rel->SetBinContent(i,j,sumC);
       }
       else isoCrho_rel->SetBinContent(i,j,0.);
 
-      if (sumP <0.95) {
-        isoPrho_rel->SetBinContent(i,j,1-sumP);
+      if (sumP >0.05) {
+        isoPrho_rel->SetBinContent(i,j,sumP);
       }
       else isoPrho_rel->SetBinContent(i,j,0.);
 
