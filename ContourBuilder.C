@@ -54,9 +54,9 @@ void ContourBuilder(string &inFilePath_, int bin,double minEta,double maxEta,dou
   TH2F *isoPrho = new TH2F("isoPrho","Iso Photon vs #rho",30,0,30,2000,0,200);
   TH2F *isoCrho = new TH2F("isoCrho","Iso Charge hadrons vs #rho",30,0,30,2000,0,200);
 
-  TH2F *isoNrho_rel = new TH2F("isoNrho_rel","Iso neutral hadrons vs #rho",30,0,30,400,0,200);
-  TH2F *isoPrho_rel = new TH2F("isoPrho_rel","Iso Photon vs #rho",30,0,30,400,0,200);
-  TH2F *isoCrho_rel = new TH2F("isoCrho_rel","Iso Charge hadrons vs #rho",30,0,30,400,0,200);
+  TH2F *isoNrho_rel = new TH2F("isoNrho_rel","Iso neutral hadrons vs #rho",30,0,30,800,0,200);
+  TH2F *isoPrho_rel = new TH2F("isoPrho_rel","Iso Photon vs #rho",30,0,30,800,0,200);
+  TH2F *isoCrho_rel = new TH2F("isoCrho_rel","Iso Charge hadrons vs #rho",30,0,30,800,0,200);
 
 
   for(int i  = 0; i < t1->GetEntries();i++){
@@ -109,9 +109,24 @@ void ContourBuilder(string &inFilePath_, int bin,double minEta,double maxEta,dou
       sumC += isoCrho_rel->GetBinContent(i,j)/projCint;
       sumP += isoPrho_rel->GetBinContent(i,j)/projPint;
 
-      isoNrho_rel->SetBinContent(i,j,max(1-sumN,0.));
-      isoCrho_rel->SetBinContent(i,j,max(1-sumC,0.));
-      isoPrho_rel->SetBinContent(i,j,max(1-sumP,0.));
+      if (sumN <0.95) {
+        isoNrho_rel->SetBinContent(i,j,1-sumN);
+      }
+      else isoNrho_rel->SetBinContent(i,j,0.);
+
+      if (sumC <0.95) {
+        isoCrho_rel->SetBinContent(i,j,1-sumC);
+      }
+      else isoCrho_rel->SetBinContent(i,j,0.);
+
+      if (sumP <0.95) {
+        isoPrho_rel->SetBinContent(i,j,1-sumP);
+      }
+      else isoPrho_rel->SetBinContent(i,j,0.);
+
+      // isoNrho_rel->SetBinContent(i,j,max(1-sumN,0.));
+      // isoCrho_rel->SetBinContent(i,j,max(1-sumC,0.));
+      // isoPrho_rel->SetBinContent(i,j,max(1-sumP,0.));
       // isoNrho_rel->SetBinContent(i,j,1000*i+j);
       // isoCrho_rel->SetBinContent(i,j,1000*i+j);
       // isoPrho_rel->SetBinContent(i,j,1000*i+j);
