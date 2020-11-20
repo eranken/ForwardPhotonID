@@ -55,12 +55,12 @@ void regtest(){
   myfile.open(("99per"+to_string(region)+".txt").c_str());
 
   ostringstream xcS,xcH,xcP,xcC,xcN;
-  double xS,xC,xN,xP;
+  double xS,xH,xC,xN,xP;
 
   if(myfile.is_open()){
    ///// while(!myfile.eof()){
-      myfile>>xS>>xC>>xN>>xP;
-  cout<<" XCNP "<<xS<<", "<<xC<<", "<<xN<<", "<<xP<<endl;
+      myfile>>xS>>xH>>xC>>xN>>xP;
+  cout<<" SHCNP "<<xS<<", "<<xH<<", "<<xC<<", "<<xN<<", "<<xP<<endl;
    ///// }
   }
 
@@ -68,10 +68,10 @@ void regtest(){
   xcC<<xC;
   xcN<<xN;
   xcP<<xP;
-  
+  xcH<<xH;
 
   //Output file
-  TString outfileName( "Loose_w_BAR_scaled.root" );
+  TString outfileName( "Loose_region_"+to_string(region)+"_TMVAout.root" );
   TFile* outputFile = TFile::Open( outfileName, "RECREATE" );
 
   //Declaring the factory
@@ -81,9 +81,9 @@ void regtest(){
   //Declaring Input Variables
   auto dataloader = new TMVA::DataLoader("dataset");
   dataloader->AddVariable( "Sieie",'F');
- // dataloader->AddVariable( "isoC",'F' );
-  //dataloader->AddVariable( "isoN",'F' );
-//  dataloader->AddVariable( "isoP",'F' );
+  dataloader->AddVariable( "isoC",'F' );
+  dataloader->AddVariable( "isoN",'F' );
+  dataloader->AddVariable( "isoP",'F' );
 
   //factory->AddVariable( "(isoN-(0.014*Ppt+0.000019*Ppt*Ppt) > 0 ) ? isoN-(0.014*Ppt+0.000019*Ppt*Ppt) : 0.0 ",'F' );
   //factory->AddVariable( "(isoP-0.0053*Ppt > 0 ) ? isoP-0.0053*Ppt : 0.0 ",'F' );
@@ -91,7 +91,7 @@ void regtest(){
   dataloader->AddSpectator( "Ppt",'F' );
   dataloader->AddVariable( "ToE",'F' );
 
-  dataloader->AddVariable( "isoC",'F' );
+  //dataloader->AddVariable( "isoC",'F' );
   //TString fname = "../../CutTMVABarrel90.root";
   string fname = "/afs/cern.ch/work/e/eranken/private/space/CMSSW_9_4_13/src/ForwardPhotonID/TrainIn/CutTMVAregion"+to_string(region)+".root";
 
@@ -116,7 +116,7 @@ void regtest(){
 //original:::
 //  dataloader->PrepareTrainingAndTestTree(mycuts,mycutb,"nTrain_Signal=5000000:nTrain_Background=5000000:nTest_Signal=5000000:nTest_Background=5000000");
 
-  dataloader->PrepareTrainingAndTestTree(mycuts,mycutb,"nTrain_Signal=1000000:nTrain_Background=1000000:nTest_Signal=1000000:nTest_Background=1000000");
+  dataloader->PrepareTrainingAndTestTree(mycuts,mycutb,"nTrain_Signal=4000000:nTrain_Background=4000000:nTest_Signal=4000000:nTest_Background=4000000");
  //factory->PrepareTrainingAndTestTree(mycuts,mycutb,"nTrain_Signal=1000:nTrain_Background=1000:nTest_Signal=1000:nTest_Background=1000");
    //nTrain_Signal=3000:nTrain_Background=6000:nTest_Signal=3000:nTest_Background=3000");
 
@@ -126,31 +126,33 @@ void regtest(){
    cout<<"post weighT"<< endl;
 
    TString methodName = "Cut_Loose_r";
+   //TString methodName = "CutsGA";
    TString methodOptions ="H:V:FitMethod=GA:EffMethod=EffSel";
-//   methodOptions +=":VarProp[0]=FMin:VarProp[1]=FMin:VarProp[2]=FMin:VarProp[3]=FMin";
+   methodOptions +=":VarProp[0]=FMin:VarProp[1]=FMin:VarProp[2]=FMin:VarProp[3]=FMin:VarProp[4]=FMin";
 //  methodOptions +=":VarProp[0]=FMax:VarProp[1]=FMax:VarProp[2]=FMax:VarProp[3]=FMax";
 //old cut method
-//   methodOptions +=":CutRangeMax[0]="+xcS.str();
-//   methodOptions +=":CutRangeMax[1]="+xcC.str();
-//   methodOptions +=":CutRangeMax[2]="+xcN.str();
-//   methodOptions +=":CutRangeMax[3]="+xcP.str();
+   methodOptions +=":CutRangeMax[0]="+xcS.str();
+   methodOptions +=":CutRangeMax[1]="+xcC.str();
+   methodOptions +=":CutRangeMax[2]="+xcN.str();
+   methodOptions +=":CutRangeMax[3]="+xcP.str();
+   methodOptions +=":CutRangeMax[4]="+xcH.str();
 
-     methodOptions +=":CutRangeMax[0]=0.5";
-     methodOptions +=":CutRangeMax[1]=0.5";
-     methodOptions +=":CutRangeMax[2]=10.";
+     //methodOptions +=":CutRangeMax[0]=0.5";
+     //methodOptions +=":CutRangeMax[1]=0.5";
+     //methodOptions +=":CutRangeMax[1]=10.";
 //  
 //   methodOptions +=":CutRangeMax[3]=10.";
 	   //   methodOptions +=":CutRangeMax[4]="+xcP.str(); //!!!!!!!!!!
 
-   methodOptions +=":CutRangeMin[0]=0.0"; 
-   methodOptions +=":CutRangeMin[1]=0.0";
-   methodOptions +=":CutRangeMin[2]=0.0";
-//   methodOptions +=":CutRangeMin[3]=0.0";
+//   methodOptions +=":CutRangeMin[0]=-10.0"; 
+//   methodOptions +=":CutRangeMin[1]=-10.0";
+ //  methodOptions +=":CutRangeMin[2]=-10.0";
+  // methodOptions +=":CutRangeMin[3]=-10.0";
    // methodOptions +=":CutRangeMin[4]=-1.0";
 
 //   methodOptions +=":nTrain_Signal=10000:nTrain_Background=10000:nTest_Signal=10000:nTest_Background=100000";
    //************
-   methodOptions +=":popsize=800:steps=100";
+   //methodOptions +=":popsize=800:steps=100";
    
    cout<<"gonna book the method"<<endl;
    factory->BookMethod(dataloader, TMVA::Types::kCuts,methodName,methodOptions);

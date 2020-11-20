@@ -22,7 +22,7 @@ void TableWriter(vector<double> &etaBins, vector<vector<double>> &EAB, vector<ve
   TH2D *EAhist =new TH2D("EAhist","Eta vs pt",3,0,3.,N_etaBins,etaBins_array);
   EAhist->GetXaxis()->SetBinLabel(1,"Iso C");
   EAhist->GetXaxis()->SetBinLabel(2,"Iso N");
-  EAhist->GetXaxis()->SetBinLabel(1,"Iso P");
+  EAhist->GetXaxis()->SetBinLabel(3,"Iso P");
   for (size_t i = 0; i < EAB.size(); i++) {
 	EAhist->SetBinContent(1,i+1,EAB[i][0]);
 	EAhist->SetBinContent(2,i+1,EAB[i][1]);
