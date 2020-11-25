@@ -72,7 +72,7 @@ for entryNum in range(0,t_S.GetEntries()):
 		print "negative weight S !!!!!!!"
 
 	SigTot+=weight
-	if isoN<isoN_cut and isoP < isoP_cut and isoN<isoN_cut and Sieie<Sieie_cut and HOE < HOE_cut:
+	if isoN<isoN_cut and isoP < isoP_cut and isoC<isoC_cut and Sieie<Sieie_cut and HOE < HOE_cut:
 		SigEff+=weight
 
 
