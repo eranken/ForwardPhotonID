@@ -17,11 +17,24 @@ t_S = fi.Get('t_S')
 t_B = fi.Get('t_B')
 
 #reg 0
-HOE_cut = .1224
-Sieie_cut = .00995
-isoC_cut = 3.457
-isoN_cut = 5.856
-isoP_cut = 1.2242
+HOE_cut = 0.100481
+Sieie_cut = 0.0104794
+isoC_cut = 3.84761
+isoN_cut = 4.90855
+isoP_cut = 0.505464
+
+#POG cuts
+HOE_cut = 0.04596
+Sieie_cut = 0.0106
+isoC_cut = 1.694
+isoN_cut = 24.032
+isoP_cut = 2.876
+
+#HOE_cut = 0.0513
+#Sieie_cut = 0.010267
+#isoC_cut = 3.681
+#isoN_cut = 8.888
+#isoP_cut = 0.538
 
 #reg1
 #HOE_cut = .059
@@ -86,7 +99,7 @@ for entryNum in range(0,t_B.GetEntries()):
 		print "negative weight B !!!!!!!"
 
 	BgTot+=weight
-	if isoN<isoN_cut and isoP < isoP_cut and isoN<isoN_cut and Sieie<Sieie_cut and HOE < HOE_cut:
+	if isoN<isoN_cut and isoP < isoP_cut and isoC<isoC_cut and Sieie<Sieie_cut and HOE < HOE_cut:
 		BgEff+=weight
 
 gStyle.SetOptStat(0000)

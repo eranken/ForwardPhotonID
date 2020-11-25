@@ -106,7 +106,7 @@ for region in cutvals:
 			for key2 in cuts:
 				histsSall[key+key2].Fill(varvals[key],weight)
 
-		if isoN<isoN_cut and isoP < isoP_cut and isoN<isoN_cut and Sieie<Sieie_cut and HOE < HOE_cut:
+		if isoN<isoN_cut and isoP < isoP_cut and isoC<isoC_cut and Sieie<Sieie_cut and HOE < HOE_cut:
 			for key in vars:
 				histsSpass[key].Fill(varvals[key],weight)
 
@@ -141,7 +141,7 @@ for region in cutvals:
 			for key2 in cuts:
 				histsBall[key+key2].Fill(varvals[key],weight)
 
-		if isoN<isoN_cut and isoP < isoP_cut and isoN<isoN_cut and Sieie<Sieie_cut and HOE < HOE_cut:
+		if isoN<isoN_cut and isoP < isoP_cut and isoC<isoC_cut and Sieie<Sieie_cut and HOE < HOE_cut:
 			for key in vars:
 				histsBpass[key].Fill(varvals[key],weight)
 
