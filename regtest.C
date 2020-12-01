@@ -80,6 +80,7 @@ void regtest(){
   factory->SetVerbose(true);
   //Declaring Input Variables
   auto dataloader = new TMVA::DataLoader("dataset");
+  dataloader->AddVariable( "ToE",'F' );
   dataloader->AddVariable( "Sieie",'F');
   dataloader->AddVariable( "isoC",'F' );
   dataloader->AddVariable( "isoN",'F' );
@@ -89,7 +90,6 @@ void regtest(){
   //factory->AddVariable( "(isoP-0.0053*Ppt > 0 ) ? isoP-0.0053*Ppt : 0.0 ",'F' );
 
   dataloader->AddSpectator( "Ppt",'F' );
-  dataloader->AddVariable( "ToE",'F' );
 
   //dataloader->AddVariable( "isoC",'F' );
   //TString fname = "../../CutTMVABarrel90.root";
@@ -109,14 +109,14 @@ void regtest(){
    dataloader->AddSignalTree( signal, signalWeight );
    dataloader->AddBackgroundTree( background , backgroundWeight );
 
-   TCut mycuts ="Ppt>15   && Ppt < 200 && ToE < 0.05";
-   TCut mycutb ="Ppt>15   && Ppt < 200 && ToE < 0.05";
+   TCut mycuts ="Ppt>15   && Ppt < 200";
+   TCut mycutb ="Ppt>15   && Ppt < 200";
    //factory->PrepareTrainingAndTestTree(mycuts,mycutb,"");
    //factory->PrepareTrainingAndTestTree(mycuts,mycutb,"nTrain_Signal=300000:nTrain_Background=300000:nTest_Signal=300000:nTest_Background=300000");
 //original:::
 //  dataloader->PrepareTrainingAndTestTree(mycuts,mycutb,"nTrain_Signal=5000000:nTrain_Background=5000000:nTest_Signal=5000000:nTest_Background=5000000");
 
-  dataloader->PrepareTrainingAndTestTree(mycuts,mycutb,"nTrain_Signal=4000000:nTrain_Background=4000000:nTest_Signal=4000000:nTest_Background=4000000");
+  dataloader->PrepareTrainingAndTestTree(mycuts,mycutb,"nTrain_Signal=2000000:nTrain_Background=2000000:nTest_Signal=0:nTest_Background=0");
  //factory->PrepareTrainingAndTestTree(mycuts,mycutb,"nTrain_Signal=1000:nTrain_Background=1000:nTest_Signal=1000:nTest_Background=1000");
    //nTrain_Signal=3000:nTrain_Background=6000:nTest_Signal=3000:nTest_Background=3000");
 
@@ -125,17 +125,17 @@ void regtest(){
    dataloader->SetSignalWeightExpression("weighT");
    cout<<"post weighT"<< endl;
 
-   TString methodName = "Cut_Loose_r";
+   TString methodName = "Cut_Loose_r"+to_string(region);
    //TString methodName = "CutsGA";
    TString methodOptions ="H:V:FitMethod=GA:EffMethod=EffSel";
    methodOptions +=":VarProp[0]=FMin:VarProp[1]=FMin:VarProp[2]=FMin:VarProp[3]=FMin:VarProp[4]=FMin";
 //  methodOptions +=":VarProp[0]=FMax:VarProp[1]=FMax:VarProp[2]=FMax:VarProp[3]=FMax";
 //old cut method
-   methodOptions +=":CutRangeMax[0]="+xcS.str();
-   methodOptions +=":CutRangeMax[1]="+xcC.str();
-   methodOptions +=":CutRangeMax[2]="+xcN.str();
-   methodOptions +=":CutRangeMax[3]="+xcP.str();
-   methodOptions +=":CutRangeMax[4]="+xcH.str();
+   methodOptions +=":CutRangeMax[1]="+xcS.str();
+   methodOptions +=":CutRangeMax[2]="+xcC.str();
+   methodOptions +=":CutRangeMax[3]="+xcN.str();
+   methodOptions +=":CutRangeMax[4]="+xcP.str();
+   methodOptions +=":CutRangeMax[0]="+xcH.str();
 
      //methodOptions +=":CutRangeMax[0]=0.5";
      //methodOptions +=":CutRangeMax[1]=0.5";
@@ -152,7 +152,7 @@ void regtest(){
 
 //   methodOptions +=":nTrain_Signal=10000:nTrain_Background=10000:nTest_Signal=10000:nTest_Background=100000";
    //************
-   //methodOptions +=":popsize=800:steps=100";
+   methodOptions +=":popsize=400:steps=50";
    
    cout<<"gonna book the method"<<endl;
    factory->BookMethod(dataloader, TMVA::Types::kCuts,methodName,methodOptions);
