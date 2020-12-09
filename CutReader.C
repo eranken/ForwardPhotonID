@@ -49,7 +49,7 @@ void CutReader(TString whichcut, int region){
 
 
   ofstream outfile;
-  outfile.open("TrainIn/Cuts_"+whichcut+regionname+".txt");
+  outfile.open("InputCuts/Cuts_"+whichcut+regionname+".txt");
 
 
   //Declaring the reader
@@ -59,8 +59,10 @@ void CutReader(TString whichcut, int region){
   //TString methodName = "Cuts_Medium_r";
   //TString weightfile = "./weights/TMVAClassification_Cut_Medium_r.weights.xml";
 
-  TString methodName = "Cut_"+whichcut+regionname;
-  TString weightfile = "./dataset/weights/TMVAClassification_"+methodName+".weights.xml";
+  // TString methodName = "Cut_"+whichcut+regionname;
+	TString methodName = "Cut_"+whichcut+regionname;
+
+  TString weightfile = "./TrainOut/TMVAClassification_"+methodName+".weights.xml";
 
   TMVA::Reader *reader = new TMVA::Reader( "!Color" );
   float Sieie,ToE,isoC,isoN,isoP,pt;
@@ -85,14 +87,13 @@ void CutReader(TString whichcut, int region){
   std::vector<Double_t> cutsMax;
 
 
-  double SEF =  0.90;
+  double SEF = whichcut=="L" ? 0.90 : (whichcut=="M" ? 0.8 : (whichcut == "T" ? 0.7 : 0.0));
+  cout << SEF << endl;
   if(mcuts)mcuts->GetCuts(SEF, cutsMin, cutsMax );
   outfile<<" "<<cutsMax[0]<<" "<<cutsMax[1]<<" "<<cutsMax[2]<<" "<<cutsMax[3]<<" "<<cutsMax[4]<<endl;
 
   delete reader;
   outfile.close();
-  //myfileM.close();
-  //myfileT.close();
   cout<<"DONE READING CUTS"<<endl;
 
 }
