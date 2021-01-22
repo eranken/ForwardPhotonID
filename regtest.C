@@ -11,7 +11,7 @@
 #include "TSystem.h"
 #include "TROOT.h"
 
-#include "helper.cc"
+//#include "helper.cc"
 
 #include "TMVA/GeneticAlgorithm.h"
 #include "TMVA/GeneticFitter.h"
@@ -25,8 +25,12 @@ using namespace TMVA;
 
 
 
-void regtest(){
-	int region= 0;
+void regtest(TString mode, int region, int Nevents){
+
+	TString loadcuts;
+	if(mode=="L") loadcuts ="I";
+	if(mode=="M") loadcuts ="L";
+	if(mode=="T") loadcuts ="M";
 
 	ifstream isoPfile;
 	ifstream isoNfile;
@@ -38,29 +42,29 @@ void regtest(){
 	isoNfile>>isoN_formstring_x;
 	vector<string> justx{"x"};
 	string phoPt = "Ppt";
+	
+	//string isoP_formstring_ppt = string_replace(isoP_formstring_x, justx, phoPt);
+	//string isoN_formstring_ppt = string_replace(isoN_formstring_x, justx, phoPt);
 
-	string isoP_formstring_ppt = string_replace(isoP_formstring_x, justx, phoPt);
-	string isoN_formstring_ppt = string_replace(isoN_formstring_x, justx, phoPt);
-
-	cout<<isoP_formstring_x<<endl;
-	cout<<isoP_formstring_ppt<<endl;
-	cout<<isoN_formstring_x<<endl;
-	cout<<isoN_formstring_ppt<<endl;
+	cout<<"isoP "<<isoP_formstring_x<<endl;
+	//cout<<isoP_formstring_ppt<<endl;
+	cout<<"iso N"<<isoN_formstring_x<<endl;
+	//cout<<isoN_formstring_ppt<<endl;
 
 
   TMVA::Tools::Instance();
   std::cout << "==> Start TMVARegression" << std::endl;
 
   ifstream myfile;
-  myfile.open(("99per"+to_string(region)+".txt").c_str());
+  myfile.open("InputCuts/Cuts_"+loadcuts+to_string(region)+".txt");
 
   ostringstream xcS,xcH,xcP,xcC,xcN;
   double xS,xH,xC,xN,xP;
 
   if(myfile.is_open()){
    ///// while(!myfile.eof()){
-      myfile>>xS>>xH>>xC>>xN>>xP;
-  cout<<" SHCNP "<<xS<<", "<<xH<<", "<<xC<<", "<<xN<<", "<<xP<<endl;
+      myfile>>xH>>xS>>xC>>xN>>xP;
+  cout<<" HSCNP "<<xH<<", "<<xS<<", "<<xC<<", "<<xN<<", "<<xP<<endl;
    ///// }
   }
 
@@ -71,7 +75,7 @@ void regtest(){
   xcH<<xH;
 
   //Output file
-  TString outfileName( "Loose_region_"+to_string(region)+"_TMVAout.root" );
+  TString outfileName( "Cuts_"+mode+to_string(region)+"_TMVAout.root" );
   TFile* outputFile = TFile::Open( outfileName, "RECREATE" );
 
   //Declaring the factory
@@ -109,14 +113,17 @@ void regtest(){
    dataloader->AddSignalTree( signal, signalWeight );
    dataloader->AddBackgroundTree( background , backgroundWeight );
 
-   TCut mycuts ="Ppt>15   && Ppt < 200";
-   TCut mycutb ="Ppt>15   && Ppt < 200";
+  //!!! PT change
+   //TCut mycuts ="Ppt>15   && Ppt < 200";
+   TCut mycuts ="Ppt>15   && Ppt < 60";
+   //TCut mycutb ="Ppt>15   && Ppt < 200";
+   TCut mycutb ="Ppt>15   && Ppt < 60";
    //factory->PrepareTrainingAndTestTree(mycuts,mycutb,"");
    //factory->PrepareTrainingAndTestTree(mycuts,mycutb,"nTrain_Signal=300000:nTrain_Background=300000:nTest_Signal=300000:nTest_Background=300000");
 //original:::
 //  dataloader->PrepareTrainingAndTestTree(mycuts,mycutb,"nTrain_Signal=5000000:nTrain_Background=5000000:nTest_Signal=5000000:nTest_Background=5000000");
 
-  dataloader->PrepareTrainingAndTestTree(mycuts,mycutb,"nTrain_Signal=2000000:nTrain_Background=2000000:nTest_Signal=0:nTest_Background=0");
+  dataloader->PrepareTrainingAndTestTree(mycuts,mycutb,"nTrain_Signal="+to_string(Nevents)+":nTrain_Background="+to_string(Nevents)+":nTest_Signal=0:nTest_Background=0");
  //factory->PrepareTrainingAndTestTree(mycuts,mycutb,"nTrain_Signal=1000:nTrain_Background=1000:nTest_Signal=1000:nTest_Background=1000");
    //nTrain_Signal=3000:nTrain_Background=6000:nTest_Signal=3000:nTest_Background=3000");
 
@@ -125,7 +132,7 @@ void regtest(){
    dataloader->SetSignalWeightExpression("weighT");
    cout<<"post weighT"<< endl;
 
-   TString methodName = "Cut_Loose_r"+to_string(region);
+   TString methodName = "Cut_"+mode+to_string(region);
    //TString methodName = "CutsGA";
    TString methodOptions ="H:V:FitMethod=GA:EffMethod=EffSel";
    methodOptions +=":VarProp[0]=FMin:VarProp[1]=FMin:VarProp[2]=FMin:VarProp[3]=FMin:VarProp[4]=FMin";

@@ -4,7 +4,7 @@
 #include <TStyle.h>
 #include <TCanvas.h>
 
-void CutID::CutBasedID(int reg, double etaLow, double etaHigh, const TH2D* EAhist, string mode){
+void CutID::CutBasedID(int reg, double etaLow, double etaHigh, const TH2D* EAhist, string mode, size_t stepsize=1){
 
   TFile *f1;
   f1 =  new TFile((mode+"/CutTMVAregion"+to_string(reg)+".root").c_str(),"recreate");
@@ -156,8 +156,7 @@ void CutID::CutBasedID(int reg, double etaLow, double etaHigh, const TH2D* EAhis
 
 //  MAKE SMALL FILES HERE
     //for (Long64_t jentry=0; jentry<nentries;jentry++){
-    for (Long64_t jentry=0; jentry<nentries;jentry+=8){
-  //  for (Long64_t jentry=0; jentry<25000000;jentry++){
+    for (Long64_t jentry=0; jentry<nentries;jentry+=stepsize){
     Long64_t ientry = LoadTree(jentry);
     if (ientry < 0) break;
     nb = fChain->GetEntry(jentry);   nbytes += nb;

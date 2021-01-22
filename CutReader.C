@@ -90,7 +90,7 @@ void CutReader(TString whichcut, int region){
   double SEF = whichcut=="L" ? 0.90 : (whichcut=="M" ? 0.8 : (whichcut == "T" ? 0.7 : 0.0));
   cout << SEF << endl;
   if(mcuts)mcuts->GetCuts(SEF, cutsMin, cutsMax );
-  outfile<<" "<<cutsMax[0]<<" "<<cutsMax[1]<<" "<<cutsMax[2]<<" "<<cutsMax[3]<<" "<<cutsMax[4]<<endl;
+  outfile<<cutsMax[0]<<endl<<cutsMax[1]<<endl<<cutsMax[2]<<endl<<cutsMax[3]<<endl<<cutsMax[4]<<endl;
 
   delete reader;
   outfile.close();

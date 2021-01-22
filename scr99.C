@@ -27,7 +27,7 @@ TFormula *isoN_form = new TFormula(("isoNreg"+to_string(region)).c_str(),isoN_fo
 float ToE,Sie,IsoP,IsoC,IsoN,weighT,Ppt;
 
   ofstream myfile;
-  myfile.open(("TrainIn/99per"+to_string(region)+".txt").c_str());
+  myfile.open(("TrainIn/Cuts_I"+to_string(region)+".txt").c_str());
 
 
   t_S->SetBranchAddress("Ppt",&Ppt);
@@ -56,7 +56,9 @@ float ToE,Sie,IsoP,IsoC,IsoN,weighT,Ppt;
   max_n = 0;
   max_t = 0;
   double totS = 0;
-  for(int i = 0; i < t_S->GetEntries(); i++){
+  int maxentries = min(t_S->GetEntries(),10000000LL);
+  //for(int i = 0; i < t_S->GetEntries(); i++){
+  for(int i = 0; i < maxentries; i++){
     t_S->GetEntry(i);
 
     if(Ppt < 20 ) continue;
@@ -195,8 +197,8 @@ cout<<xcs<<", "<<xch<<", "<<xcp<<", "<<xcc<<", "<<xcn<<", "<<endl;
   }
   }
 
-  myfile<<xcsf<<endl;
   myfile<<xchf<<endl;
+  myfile<<xcsf<<endl;
   myfile<<xccf<<endl;
   myfile<<xcnf<<endl;
   myfile<<xcpf<<endl;

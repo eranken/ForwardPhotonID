@@ -243,7 +243,7 @@ void ContourBuilder(string &inFilePath_, int bin,double minEta,double maxEta,dou
 
     TH1D *r23 = hisC->ProjectionY(" ",i,i+1," ");
     TH1D *h3 = (TH1D*) r23->Clone();
-    if(  h3->GetEntries() > 0)ErrCalc1(h3,i,0.70,xval,errXL,errXH);
+    if(  h3->GetEntries() > 0)ErrCalc1(h3,i,0.90,xval,errXL,errXH);
     cout<<"bin :"<<i<<" "<<xval<<"-"<<errXL<<"+ " << errXH<<endl;
     cutVc[i-1]   = xval;
     errVLc[i-1]   = errXL;
@@ -286,29 +286,29 @@ void ContourBuilder(string &inFilePath_, int bin,double minEta,double maxEta,dou
   gStyle->SetOptFit(1);
   TCanvas *c3 = new TCanvas("c3","Iso vs Pt",1200,400);
   c3->Divide(3,1);
-  c3->cd(1);
+  c3->cd(2);
   IsoNvsrho->SetMarkerStyle(24);
   IsoNvsrho->SetMarkerSize(0.4);
+  IsoNvsrho->SetTitle((minEtaStr+"< |#eta| <"+maxEtaStr).c_str());
   IsoNvsrho->Draw("AP");
   IsoNvsrho->GetXaxis()->SetTitle("#rho");
   IsoNvsrho->GetYaxis()->SetTitle("Neutral Isolation 90% Contour ");
-  IsoNvsrho->SetTitle(("Eta: "+minEtaStr+" - "+maxEtaStr).c_str());
 
-  c3->cd(2);
+  c3->cd(3);
   IsoPvsrho->SetMarkerStyle(24);
   IsoPvsrho->SetMarkerSize(0.4);
+  IsoPvsrho->SetTitle((minEtaStr+"< |#eta| <"+maxEtaStr).c_str());
   IsoPvsrho->Draw("AP");
   IsoPvsrho->GetXaxis()->SetTitle("#rho");
   IsoPvsrho->GetYaxis()->SetTitle("Photon Isolation 90% Contour ");
-  IsoPvsrho->SetTitle(("Eta: "+minEtaStr+" - "+maxEtaStr).c_str());
 
-  c3->cd(3);
+  c3->cd(1);
   IsoCvsrho->SetMarkerStyle(24);
   IsoCvsrho->SetMarkerSize(0.4);
+  IsoCvsrho->SetTitle((minEtaStr+"< |#eta| <"+maxEtaStr).c_str());
   IsoCvsrho->Draw("AP");
   IsoCvsrho->GetXaxis()->SetTitle("#rho");
   IsoCvsrho->GetYaxis()->SetTitle("Charge Isolation 90% Contour ");
-  IsoCvsrho->SetTitle("Effective Area Fitting");
 
   c3->SaveAs(PNGName);
   c3->SaveAs(PDFName);
