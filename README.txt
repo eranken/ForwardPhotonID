@@ -8,7 +8,7 @@ The procedure to prepare for training the ID is divided into root Macros of form
 prepare inputs
 ##############
 
-note: steps 2 and 5 are time consuming and can be sent off to condor if desired.
+NOTE: steps 2 and 5 are time consuming and can be sent off to condor if desired.
 
 1.  ensure all necessary directories are present by running 
 
