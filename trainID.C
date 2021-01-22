@@ -11,8 +11,6 @@
 #include "TSystem.h"
 #include "TROOT.h"
 
-//#include "helper.cc"
-
 #include "TMVA/GeneticAlgorithm.h"
 #include "TMVA/GeneticFitter.h"
 #include "TMVA/IFitterTarget.h"

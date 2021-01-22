@@ -12,7 +12,7 @@ pwd
 ls
 mkdir weights
 hostname
-root -l -b -q 'regtest.C("M",0,5000000)'
+root -l -b -q 'trainID.C("M",0,5000000)'
 cp dataset/weights/* /afs/cern.ch/work/e/eranken/private/space/CMSSW_9_4_13/src/ForwardPhotonID/CondorOut/weights/
 cp *.root /afs/cern.ch/work/e/eranken/private/space/CMSSW_9_4_13/src/ForwardPhotonID/CondorOut/
 #cp -r dataset/weights/*.C CondorOut/
