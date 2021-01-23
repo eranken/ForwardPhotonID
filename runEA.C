@@ -34,8 +34,8 @@ void runEA(){
   string inFilePath = (baseDir+inFileName).c_str();
   gROOT->SetBatch();
 
-  //vector<double> etaBins{0,1.0, 1.479,2.0,2.2,2.3,2.4,2.5,2.66,2.87,3.0};
-  vector<double> etaBins{0,1.0, 1.479};
+  vector<double> etaBins{0,1.0, 1.479,2.0,2.2,2.3,2.4,2.5,2.66,2.87,3.0};
+  //vector<double> etaBins{0,1.0, 1.479};
   //vector<double> etaBins{0,1.0};
   size_t N_etaBins = etaBins.size()-1;
 

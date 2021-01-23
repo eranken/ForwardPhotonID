@@ -30,23 +30,26 @@ void trainID(TString mode, int region, int Nevents){
 	if(mode=="M") loadcuts ="L";
 	if(mode=="T") loadcuts ="M";
 
-	ifstream isoPfile;
-	ifstream isoNfile;
-	isoPfile.open(("HPT/isoP"+to_string(region)+".txt"));
-	isoNfile.open(("HPT/isoN"+to_string(region)+".txt"));
-	string isoP_formstring_x;
-	string isoN_formstring_x;
-	isoPfile>>isoP_formstring_x;
-	isoNfile>>isoN_formstring_x;
-	vector<string> justx{"x"};
-	string phoPt = "Ppt";
+//if you want to go back to the old way of reading pt formulas into TMVA
+//this commented out stuff can do that if you provide a "string_replace" function
+
+	//ifstream isoPfile;
+	//ifstream isoNfile;
+	//isoPfile.open(("HPT/isoP"+to_string(region)+".txt"));
+	//isoNfile.open(("HPT/isoN"+to_string(region)+".txt"));
+	//string isoP_formstring_x;
+	//string isoN_formstring_x;
+	//isoPfile>>isoP_formstring_x;
+	//isoNfile>>isoN_formstring_x;
+	//vector<string> justx{"x"};
+	//string phoPt = "Ppt";
 	
 	//string isoP_formstring_ppt = string_replace(isoP_formstring_x, justx, phoPt);
 	//string isoN_formstring_ppt = string_replace(isoN_formstring_x, justx, phoPt);
 
-	cout<<"isoP "<<isoP_formstring_x<<endl;
+	//cout<<"isoP "<<isoP_formstring_x<<endl;
 	//cout<<isoP_formstring_ppt<<endl;
-	cout<<"iso N"<<isoN_formstring_x<<endl;
+	//cout<<"iso N"<<isoN_formstring_x<<endl;
 	//cout<<isoN_formstring_ppt<<endl;
 
 
@@ -60,10 +63,8 @@ void trainID(TString mode, int region, int Nevents){
   double xS,xH,xC,xN,xP;
 
   if(myfile.is_open()){
-   ///// while(!myfile.eof()){
       myfile>>xH>>xS>>xC>>xN>>xP;
   cout<<" HSCNP "<<xH<<", "<<xS<<", "<<xC<<", "<<xN<<", "<<xP<<endl;
-   ///// }
   }
 
   xcS<<xS;
@@ -88,13 +89,9 @@ void trainID(TString mode, int region, int Nevents){
   dataloader->AddVariable( "isoN",'F' );
   dataloader->AddVariable( "isoP",'F' );
 
-  //factory->AddVariable( "(isoN-(0.014*Ppt+0.000019*Ppt*Ppt) > 0 ) ? isoN-(0.014*Ppt+0.000019*Ppt*Ppt) : 0.0 ",'F' );
-  //factory->AddVariable( "(isoP-0.0053*Ppt > 0 ) ? isoP-0.0053*Ppt : 0.0 ",'F' );
 
   dataloader->AddSpectator( "Ppt",'F' );
 
-  //dataloader->AddVariable( "isoC",'F' );
-  //TString fname = "../../CutTMVABarrel90.root";
   string fname = "/afs/cern.ch/work/e/eranken/private/space/CMSSW_9_4_13/src/ForwardPhotonID/TrainIn/CutTMVAregion"+to_string(region)+".root";
 
  TFile* input = new TFile( fname.c_str() ,"READ");
@@ -111,19 +108,14 @@ void trainID(TString mode, int region, int Nevents){
    dataloader->AddSignalTree( signal, signalWeight );
    dataloader->AddBackgroundTree( background , backgroundWeight );
 
-  //!!! PT change
+  // Set initial selection cuts
    //TCut mycuts ="Ppt>15   && Ppt < 200";
    TCut mycuts ="Ppt>15   && Ppt < 60";
    //TCut mycutb ="Ppt>15   && Ppt < 200";
    TCut mycutb ="Ppt>15   && Ppt < 60";
-   //factory->PrepareTrainingAndTestTree(mycuts,mycutb,"");
-   //factory->PrepareTrainingAndTestTree(mycuts,mycutb,"nTrain_Signal=300000:nTrain_Background=300000:nTest_Signal=300000:nTest_Background=300000");
-//original:::
-//  dataloader->PrepareTrainingAndTestTree(mycuts,mycutb,"nTrain_Signal=5000000:nTrain_Background=5000000:nTest_Signal=5000000:nTest_Background=5000000");
 
+   //this is where Ntrain, Ntest are included+set 
   dataloader->PrepareTrainingAndTestTree(mycuts,mycutb,"nTrain_Signal="+to_string(Nevents)+":nTrain_Background="+to_string(Nevents)+":nTest_Signal=0:nTest_Background=0");
- //factory->PrepareTrainingAndTestTree(mycuts,mycutb,"nTrain_Signal=1000:nTrain_Background=1000:nTest_Signal=1000:nTest_Background=1000");
-   //nTrain_Signal=3000:nTrain_Background=6000:nTest_Signal=3000:nTest_Background=3000");
 
    cout<<"pre weighT"<<endl;
    dataloader->SetBackgroundWeightExpression("weighT");
@@ -131,48 +123,28 @@ void trainID(TString mode, int region, int Nevents){
    cout<<"post weighT"<< endl;
 
    TString methodName = "Cut_"+mode+to_string(region);
-   //TString methodName = "CutsGA";
    TString methodOptions ="H:V:FitMethod=GA:EffMethod=EffSel";
+   
    methodOptions +=":VarProp[0]=FMin:VarProp[1]=FMin:VarProp[2]=FMin:VarProp[3]=FMin:VarProp[4]=FMin";
-//  methodOptions +=":VarProp[0]=FMax:VarProp[1]=FMax:VarProp[2]=FMax:VarProp[3]=FMax";
-//old cut method
    methodOptions +=":CutRangeMax[1]="+xcS.str();
    methodOptions +=":CutRangeMax[2]="+xcC.str();
    methodOptions +=":CutRangeMax[3]="+xcN.str();
    methodOptions +=":CutRangeMax[4]="+xcP.str();
    methodOptions +=":CutRangeMax[0]="+xcH.str();
 
-     //methodOptions +=":CutRangeMax[0]=0.5";
-     //methodOptions +=":CutRangeMax[1]=0.5";
-     //methodOptions +=":CutRangeMax[1]=10.";
-//  
-//   methodOptions +=":CutRangeMax[3]=10.";
-	   //   methodOptions +=":CutRangeMax[4]="+xcP.str(); //!!!!!!!!!!
-
-//   methodOptions +=":CutRangeMin[0]=-10.0"; 
-//   methodOptions +=":CutRangeMin[1]=-10.0";
- //  methodOptions +=":CutRangeMin[2]=-10.0";
-  // methodOptions +=":CutRangeMin[3]=-10.0";
-   // methodOptions +=":CutRangeMin[4]=-1.0";
-
-//   methodOptions +=":nTrain_Signal=10000:nTrain_Background=10000:nTest_Signal=10000:nTest_Background=100000";
-   //************
    methodOptions +=":popsize=400:steps=50";
    
-   cout<<"gonna book the method"<<endl;
+   cout<<"book the method"<<endl;
    factory->BookMethod(dataloader, TMVA::Types::kCuts,methodName,methodOptions);
-   cout<<"gonna train all methods"<<endl;
+   cout<<"train all methods"<<endl;
    factory->TrainAllMethods();
-   cout<<"gonna test all methods"<<endl;
+   cout<<"test all methods"<<endl;
    factory->TestAllMethods();
-   cout<<"gonna evaluate all methods"<<endl;
+   cout<<"evaluate all methods"<<endl;
    factory->EvaluateAllMethods();
 
-   // --------------------------------------------------------------
    // Save the output
    outputFile->Close();
-
-
 
    std::cout << "==> Wrote root file: " << outputFile->GetName() << std::endl;
    std::cout << "==> TMVARegression is done!" << std::endl;
