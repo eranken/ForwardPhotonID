@@ -23,7 +23,7 @@ using namespace TMVA;
 
 
 
-void regtest(TString mode, int region, int Nevents){
+void trainID(TString mode, int region, int Nevents){
 
 	TString loadcuts;
 	if(mode=="L") loadcuts ="I";
