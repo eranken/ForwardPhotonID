@@ -9,25 +9,22 @@ cout<<"doing region " << region<<endl;
   TTree *t_S = (TTree*)f1->Get("t_S");
 
 //this loads the isoP/isoN Pt formulas but not needed now  
-ifstream isoPfile;
-ifstream isoNfile;
-isoPfile.open(("HPT/isoP"+to_string(region)+".txt"));
-isoNfile.open(("HPT/isoN"+to_string(region)+".txt"));
-TString isoP_formstring;
-TString isoN_formstring;
-isoPfile>>isoP_formstring;
-isoNfile>>isoN_formstring;
+//ifstream isoPfile;
+//ifstream isoNfile;
+//isoPfile.open(("HPT/isoP"+to_string(region)+".txt"));
+//isoNfile.open(("HPT/isoN"+to_string(region)+".txt"));
+//TString isoP_formstring;
+//TString isoN_formstring;
+//isoPfile>>isoP_formstring;
+//isoNfile>>isoN_formstring;
 
-cout<<isoP_formstring<<endl;
-cout<<isoN_formstring<<endl;
-
-TFormula *isoP_form = new TFormula(("isoPreg"+to_string(region)).c_str(),isoP_formstring);
-TFormula *isoN_form = new TFormula(("isoNreg"+to_string(region)).c_str(),isoN_formstring);
+//TFormula *isoP_form = new TFormula(("isoPreg"+to_string(region)).c_str(),isoP_formstring);
+//TFormula *isoN_form = new TFormula(("isoNreg"+to_string(region)).c_str(),isoN_formstring);
 
 float ToE,Sie,IsoP,IsoC,IsoN,weighT,Ppt;
 
   ofstream myfile;
-  myfile.open(("TrainIn/Cuts_I"+to_string(region)+".txt").c_str());
+  myfile.open(("InputCuts/Cuts_I"+to_string(region)+".txt").c_str());
 
 
   t_S->SetBranchAddress("Ppt",&Ppt);
@@ -56,7 +53,7 @@ float ToE,Sie,IsoP,IsoC,IsoN,weighT,Ppt;
   max_n = 0;
   max_t = 0;
   double totS = 0;
-  int maxentries = min(t_S->GetEntries(),10000000LL);
+  int maxentries = min(t_S->GetEntries(),5000000LL);
   //for(int i = 0; i < t_S->GetEntries(); i++){
   for(int i = 0; i < maxentries; i++){
     t_S->GetEntry(i);
@@ -151,10 +148,10 @@ float ToE,Sie,IsoP,IsoC,IsoN,weighT,Ppt;
 if (i>9900) {	
 	
 
-   cout<<"bin "<<i<<endl;
-   cout<<"SHPNC:W bincenter / integrated content"<<endl;
-   cout<<xcs<<", "<<xch<<", "<<xcp<<", "<<xcc<<", "<<xcn<<", "<<endl;  	
-	cout<<sie_b<<", "<<toe_b<<", "<<pho_b<<", "<< neu_b<<", "<<chg_b <<" : "<<W<<endl;
+   //cout<<"bin "<<i<<endl;
+   //cout<<"SHPNC:W bincenter / integrated content"<<endl;
+   //cout<<xcs<<", "<<xch<<", "<<xcp<<", "<<xcc<<", "<<xcn<<", "<<endl;  	
+	//cout<<sie_b<<", "<<toe_b<<", "<<pho_b<<", "<< neu_b<<", "<<chg_b <<" : "<<W<<endl;
 	}
 	int bin = HS->FindBin(xcs);
    //cout<<i<<" "<<(HH->Integral(1,i))/(HH->Integral()*1.0)<<" "<<(HH->Integral(1,i))/(totS*1.0)<<endl;

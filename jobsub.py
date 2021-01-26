@@ -9,7 +9,7 @@ thisdir = os.getcwd()
 
 fullname = name+'_'+WP+reg
 namedir = os.path.join(thisdir,'CondorOut',name)
-jobdir = os.path.join(thisdir,'CondorOut',fullname)
+jobdir = os.path.join(thisdir,'CondorOut',name,fullname)
 #jobdir = 'CondorOut/'+fullname
 
 print namedir
@@ -21,12 +21,17 @@ cmssw_loc= '/afs/cern.ch/work/e/eranken/private/space/CMSSW_9_4_13/src/'
 if os.path.isdir(jobdir):
 	print jobdir, 'exists: EXIT'
 	sys.exit(-1)
-os.mkdir(jobdir)
 
 if not os.path.isdir(namedir):
 	os.mkdir(namedir)
+	os.mkdir(os.path.join(namedir,'weights'))
+os.mkdir(jobdir)
 
+jobflavor = 'longlunch'
 exec_name = 'exec.sh'
+
+inputcuts = os.path.join(thisdir,'InputCuts')
+macropath = os.path.join(thisdir,'trainID.C')
 
 condor_filetext =  '''#x509userproxy = /tmp/x509up_u48825
 universe = vanilla
@@ -39,12 +44,12 @@ on_exit_remove       = (ExitBySignal == FALSE && (ExitCode == 0 || ExitCode == 4
 getenv = true
 request_memory       = 16000MB
 request_disk         = 10000MB
-Transfer_Input_Files = InputCuts,trainID.C
-output               = {1}/$(Cluster)_$(Process)_job.out
-error                = {1}/$(Cluster)_$(Process)_job.err
-Log                  = {1}/$(Cluster)_$(Process)_job.log
-+JobFlavour = "testmatch"
-Queue'''.format(exec_name,jobdir)
+Transfer_Input_Files = {1},{2}
+output               = {3}/$(Cluster)_$(Process)_job.out
+error                = {3}/$(Cluster)_$(Process)_job.err
+log                  = {3}/$(Cluster)_$(Process)_job.log
++JobFlavour = "{4}"
+Queue'''.format(exec_name,inputcuts,macropath,jobdir,jobflavor)
 
 exec_filetext='''#!/bin/bash
 echo "inside jobsubmit"
@@ -72,3 +77,4 @@ exec_file.write(exec_filetext)
 exec_file.close()
 
 os.system('cd ' + jobdir + ' && condor_submit condor.sub')
+#os.system('condor_submit condor.sub')

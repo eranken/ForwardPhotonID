@@ -27,7 +27,6 @@ void runMakeInputs(string mode = "TrainIn"){
 	  vector<vector<double>> ptRegions;
 	  ptRegions.push_back({0.,1.4442});
 	  ptRegions.push_back({1.566,2.5});
-	  ptRegions.push_back({2.4,2.87});
 	  ptRegions.push_back({2.5,2.87});
 	  ptRegions.push_back({1.566,2.15});
 	  ptRegions.push_back({2.15,2.87});
@@ -72,7 +71,7 @@ void runMakeInputs(string mode = "TrainIn"){
   //
   //   }
   // }
-  for (size_t i = 4; i < ptRegions.size(); i++) {
+  for (size_t i = 0; i < ptRegions.size(); i++) {
 	  cout<<"----------------------doing region "<<to_string(i)<< endl;
 	  double etaLow=ptRegions[i][0];
 	  double etaHigh=ptRegions[i][1];
