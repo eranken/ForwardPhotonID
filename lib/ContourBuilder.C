@@ -243,7 +243,7 @@ void ContourBuilder(string &inFilePath_, int bin,double minEta,double maxEta,dou
 
     TH1D *r23 = hisC->ProjectionY(" ",i,i+1," ");
     TH1D *h3 = (TH1D*) r23->Clone();
-    if(  h3->GetEntries() > 0)ErrCalc1(h3,i,0.90,xval,errXL,errXH);
+    if(  h3->GetEntries() > 0)ErrCalc1(h3,i,0.70,xval,errXL,errXH);
     cout<<"bin :"<<i<<" "<<xval<<"-"<<errXL<<"+ " << errXH<<endl;
     cutVc[i-1]   = xval;
     errVLc[i-1]   = errXL;

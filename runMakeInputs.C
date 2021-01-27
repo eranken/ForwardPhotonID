@@ -1,6 +1,6 @@
 #include <stdlib.h>
 #include <TSystem.h>
-#include "CutID.C"
+#include "lib/CutID.C"
 
 void runMakeInputs(string mode = "TrainIn"){
   //-----------------Macro Describtion----------------------------------------------------------

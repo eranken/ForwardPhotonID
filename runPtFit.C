@@ -1,6 +1,6 @@
 #include <stdlib.h>
 #include <TSystem.h>
-#include "ptFit.C"
+#include "lib/ptFit.C"
 
 void runPtFit() {
 	int N_Regions=5;

@@ -6,9 +6,9 @@
 #include "TCanvas.h"
 #include "TStyle.h"
 #include "TSystem.h"
-#include "TableWriter.C"
-#include "ErrScanning.C"
-#include "ContourBuilder.C"
+#include "lib/TableWriter.C"
+#include "lib/ErrScanning.C"
+#include "lib/ContourBuilder.C"
 /*
 #include <cstdlib>
 #include <TSystem.h>
