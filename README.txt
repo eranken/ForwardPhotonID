@@ -2,7 +2,7 @@
 basics
 ######
 
-The procedure to prepare for training the ID is divided into root Macros of form "runXXX.C" which must be run in a specific order. These files are minimal and exist to call methods from the source code in a flexible way. Some basic configuration options are taken directly as inputs to the macros. Configuration of things like \eta bins for effective area calculation, input file locations, or ID regions, can all be changed by altering the contents of the "runXXX.C" files. Only for configuration of more technical options is it necessary to  alter the methods in the source code.
+The procedure to prepare for training the ID is divided into root Macros of form "runXXX.C" which must be run in a specific order. These files are minimal and exist to call methods from the modified photonID source code (in folder lib) in a flexible way. Some basic configuration options are taken directly as inputs to the macros. Configuration of things like \eta bins for effective area calculation, input file locations, or ID regions, can all be changed by altering the contents of the "runXXX.C" files. Only for configuration of more technical options is it necessary to  alter the methods in the "lib" folder.
 
 ##############
 prepare inputs
@@ -63,3 +63,5 @@ You have to run the Loose WP before Medium, and so on. Each one requires knowled
 $ root -l -q -b 'CutReader.C(WP,reg)'
 
 (for all applicable regions). This will generate the necessary inputs for the next WP. It also encodes the result of the previous working point, though you can read that off of the output xml file yourself in more detail.
+
+The training can take a long time when run on large training sample sizes. Examples of ways to delegate this to condor are found in condorTrain.sub and condorTrain.sh, with a more sophisticated method in the jobsub.py script. However, these are meant as examples and should be customized for your setup/preferences.

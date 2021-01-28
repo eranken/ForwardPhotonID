@@ -27,7 +27,7 @@ if not os.path.isdir(namedir):
 	os.mkdir(os.path.join(namedir,'weights'))
 os.mkdir(jobdir)
 
-jobflavor = 'longlunch'
+jobflavor = 'testmatch'
 exec_name = 'exec.sh'
 
 inputcuts = os.path.join(thisdir,'InputCuts')
