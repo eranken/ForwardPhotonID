@@ -92,7 +92,7 @@ void trainID(TString mode, int region, int Nevents){
 
   dataloader->AddSpectator( "Ppt",'F' );
 
-  string fname = "/afs/cern.ch/work/e/eranken/private/space/CMSSW_9_4_13/src/ForwardPhotonID/TrainIn/CutTMVAregion"+to_string(region)+".root";
+  string fname = "/afs/cern.ch/work/e/eranken/private/space/CMSSW_9_4_13/src/photonIDv1/TrainIn/CutTMVAregion"+to_string(region)+".root";
 
  TFile* input = new TFile( fname.c_str() ,"READ");
 
