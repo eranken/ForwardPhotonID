@@ -81,6 +81,8 @@ void CutID::Init(TTree *tree)
    fChain->SetBranchAddress("gedNeuIso", &gedNeuIso, &b_gedNeuIso);
    fChain->SetBranchAddress("gedPhPixSeed", &gedPhPixSeed, &b_gedPhPixSeed);
    fChain->SetBranchAddress("gedPhweightXS", &gedPhweightXS, &b_gedPhweightXS);
+   fChain->SetBranchAddress("R9", &R9, &b_R9);
+   fChain->SetBranchAddress("ESC", &ESC, &b_ESC);
    Notify();
 }
 

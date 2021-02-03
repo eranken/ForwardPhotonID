@@ -3,6 +3,7 @@
 #include <TH2.h>
 #include <TStyle.h>
 #include <TCanvas.h>
+#include <TMath.h>
 
 void CutID::CutBasedID(int reg, double etaLow, double etaHigh, const TH2D* EAhist, string mode, size_t stepsize=1){
 
@@ -69,7 +70,7 @@ void CutID::CutBasedID(int reg, double etaLow, double etaHigh, const TH2D* EAhis
   TH2D *etaPtsw = new TH2D("etaPtsw","Eta vs pt weighted",200,-5,5,185,15,200);
   TH2D *etaPtbw = new TH2D("etaPtbw","Eta vs pt weighted",200,-5,5,185,15,200);
 
-  float genPt,isoN,isoC,isoP,Peta,Ppt,Pphi,ToE,Sieie,weighT,weighTXS;
+  float genPt,isoN,isoC,isoP,Peta,Ppt,Pphi,ToE,Sieie,weighT,weighTXS,E_SC,r_9,E_pho;
 
   int Pix,Nvtx;
 
@@ -89,7 +90,9 @@ void CutID::CutBasedID(int reg, double etaLow, double etaHigh, const TH2D* EAhis
   t_S->Branch("weighT",&weighT,"weightT/F");
   t_S->Branch("weighTXS",&weighTXS,"weightTXS/F");
 
-
+  t_S->Branch("r9",&r_9,"r9/F");
+  t_S->Branch("ESC",&E_SC,"ESC/F");
+  t_S->Branch("phoE",&E_pho,"phoE/F");
 
   //---------Background Tree---------------
 
@@ -111,6 +114,9 @@ void CutID::CutBasedID(int reg, double etaLow, double etaHigh, const TH2D* EAhis
   t_B->Branch("weighTXS",&weighTXS,"weightTXS/F");
 
 
+  t_B->Branch("r9",&r_9,"r9/F");
+  t_B->Branch("ESC",&E_SC,"ESC/F");
+  t_B->Branch("phoE",&E_pho,"phoE/F");
 
 
   ///////////////////////////////////////////////////////////////////////////////
@@ -222,6 +228,10 @@ void CutID::CutBasedID(int reg, double etaLow, double etaHigh, const TH2D* EAhis
       ToE = gedPhTower;
       genPt = gedGenPt;
       Nvtx = NVtx;
+      
+      r_9 = R9;
+      E_SC = ESC;
+      E_pho = gedPhPt*TMath::CosH(gedPhEta);
 
       int binx = etaPts->FindBin(gedPhEta,gedPhPt);
       weighT = gedPhweightXS*( ( etaPts->GetBinContent(binx) == 0  ) ? 0.0  : 1./etaPts->GetBinContent(binx));
@@ -253,6 +263,9 @@ void CutID::CutBasedID(int reg, double etaLow, double etaHigh, const TH2D* EAhis
       ToE   = gedPhTower;
       Nvtx  = NVtx;
 
+      r_9 = R9;
+      E_SC = ESC;
+      E_pho = gedPhPt*TMath::CosH(gedPhEta);
 
       int binx = etaPtb->FindBin(gedPhEta,gedPhPt);
       weighT = gedPhweightXS*(( etaPtb->GetBinContent(binx) == 0  ) ? 0.0  : 1./etaPtb->GetBinContent(binx));

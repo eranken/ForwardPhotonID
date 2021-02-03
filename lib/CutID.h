@@ -49,7 +49,8 @@ public :
    Int_t           gedPhPixSeed;
    Float_t         gedPhweightXS;
 
-
+   Float_t ESC;
+   Float_t R9;
 
    // List of branches
 
@@ -69,6 +70,10 @@ public :
    TBranch        *b_gedNeuIso;   //!
    TBranch        *b_gedPhPixSeed;   //!
    TBranch        *b_gedPhweightXS;
+
+   TBranch *b_R9;
+   TBranch *b_ESC;
+
 
    CutID(TTree *tree=0);
    CutID(TTree *tree, const string &inFilePath);
