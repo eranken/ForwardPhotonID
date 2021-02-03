@@ -32,13 +32,10 @@
 
 using namespace TMVA;
 
-void ReadCuts(){
-  // LIST OF THINGS TO CHNAGE IN TIME IN THIS FILE
-  // 0 THE SLOPES OF PT SCALING !
-  // 1 THE NAME OF THE FILE THAT IS GENERATED - MEDIUM LOOSE TIGHT ETC
-  // 2 THE REQUIRED efficiency 80 90 etc
-  // 3 The input weight file name
-  // 4 the output file at the end of this document
+void CutReader(TString whichcut, int region){
+
+	TString regionname= to_string(region);
+
 
   TMVA::Tools::Instance();
 
@@ -51,8 +48,8 @@ void ReadCuts(){
   //myfileM.open("MediumR.txt");
 
 
-  ofstream myfileL;
-  myfileL.open("LooseR.txt");
+  ofstream outfile;
+  outfile.open("InputCuts/Cuts_"+whichcut+regionname+".txt");
 
 
   //Declaring the reader
@@ -62,11 +59,14 @@ void ReadCuts(){
   //TString methodName = "Cuts_Medium_r";
   //TString weightfile = "./weights/TMVAClassification_Cut_Medium_r.weights.xml";
 
-  TString methodName = "Cuts_Loose_r";
-  TString weightfile = "./dataset/weight_succ/TMVAClassification_Cut_Loose_r.weights.xml";
+  // TString methodName = "Cut_"+whichcut+regionname;
+	TString methodName = "Cut_"+whichcut+regionname;
+
+  TString weightfile = "./TrainOut/TMVAClassification_"+methodName+".weights.xml";
 
   TMVA::Reader *reader = new TMVA::Reader( "!Color" );
   float Sieie,ToE,isoC,isoN,isoP,pt;
+  reader->AddVariable("ToE",&ToE);
   reader->AddVariable("Sieie",&Sieie);
   reader->AddVariable( "isoC",&isoC );
   reader->AddVariable( "isoN",&isoN );
@@ -75,8 +75,9 @@ void ReadCuts(){
   //reader->AddVariable( "(isoN-(0.0139*Ppt+0.000025*Ppt*Ppt) > 0 ) ? isoN-(0.0139*Ppt+0.000025*Ppt*Ppt) : 0.0",&isoN );
   //reader->AddVariable( "(isoP-0.0034*Ppt > 0) ? isoP-0.0034*Ppt : 0.0 ",&isoP );
 
+
   reader->AddSpectator("Ppt",&pt);
-  reader->AddSpectator("ToE",&ToE);
+
 
   reader->BookMVA(methodName,weightfile);
 
@@ -86,27 +87,13 @@ void ReadCuts(){
   std::vector<Double_t> cutsMax;
 
 
-  double SEF =  0.90;
+  double SEF = whichcut=="L" ? 0.90 : (whichcut=="M" ? 0.8 : (whichcut == "T" ? 0.7 : 0.0));
+  cout << SEF << endl;
   if(mcuts)mcuts->GetCuts(SEF, cutsMin, cutsMax );
-  myfileL<<" "<<cutsMax[0]<<" "<<cutsMax[1]<<" "<<cutsMax[2]<<" "<<cutsMax[3]<<" "<<endl;
-
-
-  /*
-  double SEF =  0.80;
-  if(mcuts)mcuts->GetCuts(SEF, cutsMin, cutsMax );
-  myfileM<<" "<<cutsMax[0]<<" "<<cutsMax[1]<<" "<<cutsMax[2]<<" "<<cutsMax[3]<<" "<<endl;
-  */
-
-  /*
-  double SEF =  0.70;
-  if(mcuts)mcuts->GetCuts(SEF, cutsMin, cutsMax );
-  myfileT<<" "<<cutsMax[0]<<" "<<cutsMax[1]<<" "<<cutsMax[2]<<" "<<cutsMax[3]<<" "<<endl;
-  */
+  outfile<<cutsMax[0]<<endl<<cutsMax[1]<<endl<<cutsMax[2]<<endl<<cutsMax[3]<<endl<<cutsMax[4]<<endl;
 
   delete reader;
-  myfileL.close();
-  //myfileM.close();
-  //myfileT.close();
+  outfile.close();
   cout<<"DONE READING CUTS"<<endl;
 
 }
