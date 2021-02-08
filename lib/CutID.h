@@ -34,7 +34,6 @@ public :
 
    Float_t         Rh;
 
-
    Float_t         gedPhEta;
    Float_t         gedGenPt;
    Float_t         gedPhPhi;

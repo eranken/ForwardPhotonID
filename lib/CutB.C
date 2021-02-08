@@ -69,7 +69,7 @@ void CutID::CutBasedID(int reg, double etaLow, double etaHigh, const TH2D* EAhis
   TH2D *etaPtsw = new TH2D("etaPtsw","Eta vs pt weighted",200,-5,5,185,15,200);
   TH2D *etaPtbw = new TH2D("etaPtbw","Eta vs pt weighted",200,-5,5,185,15,200);
 
-  float genPt,isoN,isoC,isoP,Peta,Ppt,Pphi,ToE,Sieie,weighT,weighTXS;
+  float genPt,isoN,isoC,isoP,Peta,Ppt,Pphi,ToE,Sieie,weighT,weighTXS,E_pho,rho;
 
   int Pix,Nvtx;
 
@@ -88,6 +88,8 @@ void CutID::CutBasedID(int reg, double etaLow, double etaHigh, const TH2D* EAhis
   t_S->Branch("Pix",&Pix,"Pix/I");
   t_S->Branch("weighT",&weighT,"weightT/F");
   t_S->Branch("weighTXS",&weighTXS,"weightTXS/F");
+  t_S->Branch("phoE",&E_pho,"phoE/F");
+  t_S->Branch("Rh",&rho,"Rh/F");
 
 
 
@@ -109,8 +111,9 @@ void CutID::CutBasedID(int reg, double etaLow, double etaHigh, const TH2D* EAhis
   t_B->Branch("weighT",&weighT,"weightT/F");
   t_B->Branch("Nvtx",&Nvtx,"Nvtx/I");
   t_B->Branch("weighTXS",&weighTXS,"weightTXS/F");
+  t_B->Branch("phoE",&E_pho,"phoE/F");
 
-
+  t_B->Branch("Rh",&rho,"Rh/F");
 
 
   ///////////////////////////////////////////////////////////////////////////////
@@ -222,6 +225,9 @@ void CutID::CutBasedID(int reg, double etaLow, double etaHigh, const TH2D* EAhis
       ToE = gedPhTower;
       genPt = gedGenPt;
       Nvtx = NVtx;
+
+      rho = Rh;
+      E_pho = gedPhPt*TMath::CosH(gedPhEta);
 
       int binx = etaPts->FindBin(gedPhEta,gedPhPt);
       weighT = gedPhweightXS*( ( etaPts->GetBinContent(binx) == 0  ) ? 0.0  : 1./etaPts->GetBinContent(binx));
