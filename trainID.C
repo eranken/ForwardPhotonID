@@ -109,10 +109,10 @@ void trainID(TString mode, int region, int Nevents){
    dataloader->AddBackgroundTree( background , backgroundWeight );
 
   // Set initial selection cuts
-   //TCut mycuts ="Ppt>15   && Ppt < 200";
-   TCut mycuts ="Ppt>15   && Ppt < 60";
-   //TCut mycutb ="Ppt>15   && Ppt < 200";
-   TCut mycutb ="Ppt>15   && Ppt < 60";
+   TCut mycuts ="Ppt>15   && Ppt < 200";
+   //TCut mycuts ="Ppt>15   && Ppt < 60";
+   TCut mycutb ="Ppt>15   && Ppt < 200";
+   //TCut mycutb ="Ppt>15   && Ppt < 60";
 
    //this is where Ntrain, Ntest are included+set 
   dataloader->PrepareTrainingAndTestTree(mycuts,mycutb,"nTrain_Signal="+to_string(Nevents)+":nTrain_Background="+to_string(Nevents)+":nTest_Signal=0:nTest_Background=0");
@@ -132,7 +132,7 @@ void trainID(TString mode, int region, int Nevents){
    methodOptions +=":CutRangeMax[4]="+xcP.str();
    methodOptions +=":CutRangeMax[0]="+xcH.str();
 
-   methodOptions +=":popsize=400:steps=50";
+   methodOptions +=":popsize=500:steps=60";
    
    cout<<"book the method"<<endl;
    factory->BookMethod(dataloader, TMVA::Types::kCuts,methodName,methodOptions);

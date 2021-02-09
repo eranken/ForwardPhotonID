@@ -157,7 +157,7 @@ if (i>9900) {
    //cout<<i<<" "<<(HH->Integral(1,i))/(HH->Integral()*1.0)<<" "<<(HH->Integral(1,i))/(totS*1.0)<<endl;
 
 
-   if(1.0*HS->Integral(1,i)/totS > 0.999 && p1 == 0){
+   if(1.0*HS->Integral(1,i)/totS > 0.9999 && p1 == 0){
 
      p1 = 1;
      xcsf = xcs;
@@ -166,7 +166,7 @@ if (i>9900) {
 
   bin = HH->FindBin(xch);
   // cout<<1.0*HH->Integral(1,i)/totS<<endl;
-  if(1.0*HH->Integral(1,i)/totS > 0.999 && p2 == 0){
+  if(1.0*HH->Integral(1,i)/totS > 0.9999 && p2 == 0){
 
     xchf = xch;
     p2 =1;
@@ -174,20 +174,20 @@ if (i>9900) {
    bin = HP->FindBin(xcp);
    // cout<<1.0*HP->Integral(1,i)/totS<<endl;
 
-   if(1.0*HP->Integral(1,i)/totS > 0.999 && p3 == 0){
+   if(1.0*HP->Integral(1,i)/totS > 0.9999 && p3 == 0){
 
      xcpf = xcp;
      p3 = 1;
    }
   bin = HC->FindBin(xcc);
-  if(1.0*HC->Integral(1,i)/totS > 0.999 && p4 == 0){
+  if(1.0*HC->Integral(1,i)/totS > 0.9999 && p4 == 0){
 
     xccf = xcc;
     p4 = 1;
   }
   bin = HN->FindBin(xcn);
   //  cout<<1.0*HN->Integral(1,i)/totS<<" "<<p5<<endl;
-  if(1.0*HN->Integral(1,i)/totS > 0.999 && p5 == 0){
+  if(1.0*HN->Integral(1,i)/totS > 0.9999 && p5 == 0){
 
     p5 = 1;
     xcnf = xcn;

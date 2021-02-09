@@ -27,7 +27,8 @@ if not os.path.isdir(namedir):
 	os.mkdir(os.path.join(namedir,'weights'))
 os.mkdir(jobdir)
 
-jobflavor = 'tomorrow'
+jobflavor = 'workday'
+maxruntime = 10*3600
 exec_name = 'exec.sh'
 
 inputcuts = os.path.join(thisdir,'InputCuts')
@@ -42,14 +43,14 @@ ShouldTransferFiles  = yes
 on_exit_remove       = (ExitBySignal == FALSE && (ExitCode == 0 || ExitCode == 42 || NumJobStarts>3))
 +IsFastQueueJob      = True
 getenv = true
-request_memory       = 16000MB
-request_disk         = 10000MB
+request_memory       = 4000MB
+request_disk         = 4000MB
 Transfer_Input_Files = {1},{2}
 output               = {3}/$(Cluster)_$(Process)_job.out
 error                = {3}/$(Cluster)_$(Process)_job.err
 log                  = {3}/$(Cluster)_$(Process)_job.log
-+JobFlavour = "{4}"
-Queue'''.format(exec_name,inputcuts,macropath,jobdir,jobflavor)
++MaxRuntime = {4}
+Queue'''.format(exec_name,inputcuts,macropath,jobdir,str(maxruntime))
 
 exec_filetext='''#!/bin/bash
 echo "inside jobsubmit"
