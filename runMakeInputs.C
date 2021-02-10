@@ -24,7 +24,7 @@ void runMakeInputs(string mode = "TrainIn"){
 		inputFilePath = "root://eoscms.cern.ch//eos/cms/store/group/phys_egamma/PhotonIDtuning/CutBasedID/nTuples_94X_v2/gjet_pt15to6000.root";
 	}
 	//else inputFilePath = "root://eoscms.cern.ch//eos/cms/store/group/phys_egamma/PhotonIDtuning/CutBasedID/nTuples_94X_v2/GJetgjet_add.root";
-	else inputFilePath = "/afs/cern.ch/work/e/eranken/private/space/IDinputs/EGMinputs/S178ULmadWln/all.root";
+	else inputFilePath = "/afs/cern.ch/work/e/eranken/private/space/IDinputs/EGMinputs/S17ULmadWln/all.root";
 	  vector<vector<double>> ptRegions;
 	  ptRegions.push_back({0.,1.4442});
 	  ptRegions.push_back({1.566,2.5});

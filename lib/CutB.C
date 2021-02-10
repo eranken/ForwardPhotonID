@@ -11,6 +11,7 @@ void CutID::CutBasedID(int reg, double etaLow, double etaHigh, const TH2D* EAhis
 
   TFormula isoP_form;
   TFormula isoN_form;
+  TFormula HoE_form;
 
   if (mode!="HPT") {
 	ifstream isoPfile;
@@ -27,6 +28,16 @@ void CutID::CutBasedID(int reg, double etaLow, double etaHigh, const TH2D* EAhis
 
 	isoP_form = TFormula(("isoPreg"+to_string(reg)).c_str(),isoP_formstring);
 	isoN_form = TFormula(("isoNreg"+to_string(reg)).c_str(),isoN_formstring);
+
+	
+	if (mode=="HoEcorr") {
+	   ifstream HoEfile;
+  	   HoEfile.open(("HOE/hoe"+to_string(reg)+".txt"));
+  	   TString HoE_formstring;
+	   HoEfile>>HoE_formstring;
+	   HoE_form = TFormula(("HoEreg"+to_string(reg)).c_str(),HoE_formstring);
+	   cout<<HoE_formstring<<" "<<HoE_form.Eval(0.,1.)<<endl;
+	}
 
   }
 
@@ -202,6 +213,7 @@ void CutID::CutBasedID(int reg, double etaLow, double etaHigh, const TH2D* EAhis
 	}
 
 
+
     //EOF THE ISOLATION CALCULATION
 
 
@@ -228,6 +240,11 @@ void CutID::CutBasedID(int reg, double etaLow, double etaHigh, const TH2D* EAhis
 
       rho = Rh;
       E_pho = gedPhPt*TMath::CosH(gedPhEta);
+
+      
+	if (mode=="HoEcorr") {
+		ToE = max( ToE - HoE_form.Eval(rho, E_pho),0.0);
+	}
 
       int binx = etaPts->FindBin(gedPhEta,gedPhPt);
       weighT = gedPhweightXS*( ( etaPts->GetBinContent(binx) == 0  ) ? 0.0  : 1./etaPts->GetBinContent(binx));
@@ -259,6 +276,12 @@ void CutID::CutBasedID(int reg, double etaLow, double etaHigh, const TH2D* EAhis
       ToE   = gedPhTower;
       Nvtx  = NVtx;
 
+      rho = Rh;
+      E_pho = gedPhPt*TMath::CosH(gedPhEta);
+
+	if (mode=="HoEcorr") {
+		ToE = max( ToE - HoE_form.Eval(rho, E_pho),0.0);
+	}
 
       int binx = etaPtb->FindBin(gedPhEta,gedPhPt);
       weighT = gedPhweightXS*(( etaPtb->GetBinContent(binx) == 0  ) ? 0.0  : 1./etaPtb->GetBinContent(binx));
