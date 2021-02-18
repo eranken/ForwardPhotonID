@@ -132,7 +132,7 @@ void trainID(TString mode, int region, int Nevents){
    methodOptions +=":CutRangeMax[4]="+xcP.str();
    methodOptions +=":CutRangeMax[0]="+xcH.str();
 
-   methodOptions +=":popsize=500:steps=60";
+   methodOptions +=":popsize=400:steps=50";
    
    cout<<"book the method"<<endl;
    factory->BookMethod(dataloader, TMVA::Types::kCuts,methodName,methodOptions);

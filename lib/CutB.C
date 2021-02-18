@@ -36,7 +36,7 @@ void CutID::CutBasedID(int reg, double etaLow, double etaHigh, const TH2D* EAhis
   	   TString HoE_formstring;
 	   HoEfile>>HoE_formstring;
 	   HoE_form = TFormula(("HoEreg"+to_string(reg)).c_str(),HoE_formstring);
-	   cout<<HoE_formstring<<" "<<HoE_form.Eval(0.,1.)<<endl;
+	   cout<<HoE_formstring<<" "<<HoE_form.Eval(0.,1.,0.)<<endl;
 	}
 
   }
@@ -243,7 +243,7 @@ void CutID::CutBasedID(int reg, double etaLow, double etaHigh, const TH2D* EAhis
 
       
 	if (mode=="HoEcorr") {
-		ToE = max( ToE - HoE_form.Eval(rho, E_pho),0.0);
+		ToE = max( ToE - HoE_form.Eval(rho, E_pho,1.),0.0);
 	}
 
       int binx = etaPts->FindBin(gedPhEta,gedPhPt);
@@ -280,7 +280,7 @@ void CutID::CutBasedID(int reg, double etaLow, double etaHigh, const TH2D* EAhis
       E_pho = gedPhPt*TMath::CosH(gedPhEta);
 
 	if (mode=="HoEcorr") {
-		ToE = max( ToE - HoE_form.Eval(rho, E_pho),0.0);
+		ToE = max( ToE - HoE_form.Eval(rho, E_pho,1.),0.0);
 	}
 
       int binx = etaPtb->FindBin(gedPhEta,gedPhPt);

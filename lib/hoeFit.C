@@ -229,7 +229,7 @@ TTree *t_B = (TTree*)f1->Get("t_B");
 
 
 
-  TFormula outform = TFormula("formula","[0]*x/y +[1]/y");
+  TFormula outform = TFormula("formula","[0]*x/y +[1]/y*z");
   outform.SetParameters(puCorr,noiseCorr);
   cout<<"final: "<<outform.GetExpFormula("P").Data()<<endl;
 
