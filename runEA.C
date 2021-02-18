@@ -32,6 +32,7 @@ void runEA(){
   string baseDir = "root://eoscms.cern.ch//eos/cms/store/group/phys_egamma/PhotonIDtuning/CutBasedID/nTuples_94X_v2/";
   string inFileName = "GJetgjet_add.root";
   string inFilePath = (baseDir+inFileName).c_str();
+  inFilePath = "/afs/cern.ch/work/e/eranken/private/space/IDinputs/EGMinputs/S17ULmadWln/all.root";
   gROOT->SetBatch();
 
   vector<double> etaBins{0,1.0, 1.479,2.0,2.2,2.3,2.4,2.5,2.66,2.87,3.0};
