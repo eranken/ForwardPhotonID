@@ -1,6 +1,6 @@
 #x509userproxy = /tmp/x509up_u48825
 universe = vanilla
-Executable = condorTrain0.sh
+Executable = condorTrain.sh
 Notification         = never
 WhenToTransferOutput = On_Exit
 ShouldTransferFiles  = yes

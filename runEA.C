@@ -6,9 +6,9 @@
 #include "TCanvas.h"
 #include "TStyle.h"
 #include "TSystem.h"
-#include "TableWriter.C"
-#include "ErrScanning.C"
-#include "ContourBuilder.C"
+#include "lib/TableWriter.C"
+#include "lib/ErrScanning.C"
+#include "lib/ContourBuilder.C"
 /*
 #include <cstdlib>
 #include <TSystem.h>
@@ -34,9 +34,8 @@ void runEA(){
   string inFilePath = (baseDir+inFileName).c_str();
   gROOT->SetBatch();
 
-  //vector<double> etaBins{0,1.0, 1.479,2.0,2.2,2.3,2.4,2.5,2.66,2.87,3.0};
-  vector<double> etaBins{0,1.0, 1.479};
-  //vector<double> etaBins{0,1.0};
+  vector<double> etaBins{0,1.0, 1.479,2.0,2.2,2.3,2.4,2.5,2.66,2.87,3.0};
+  //vector<double> etaBins{0,1.0, 1.479};
   size_t N_etaBins = etaBins.size()-1;
 
   vector<vector<double>> Fin;
