@@ -15,7 +15,7 @@
 void hoeFit(const int region){
 
   //TFile *f1 = new TFile("/uscms_data/d3/asroy/PhotonIdTuning/CMSSW_7_3_5/src/CutBasedPhoID2016/merged/ChEA_ISOPT/CutTMVABarrel90_HPT.root");
-  TFile *f1 = new TFile(("HOE/CutTMVAregion"+to_string(region)+".root").c_str(),"READ");
+  TFile *f1 = new TFile(("TrainIn/CutTMVAregion"+to_string(region)+".root").c_str(),"READ");
   float genPt,ppt,peta,Sie_ie,iso_P,iso_C,iso_N,ToE,weighT,phoE,hE,rho;
   int nvtx;
   gStyle->SetOptStat(0);
