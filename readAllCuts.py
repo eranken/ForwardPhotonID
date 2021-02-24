@@ -19,7 +19,7 @@ os.system('rm InputCuts/Cuts_L*')
 os.system('rm InputCuts/Cuts_M*')
 os.system('rm InputCuts/Cuts_T*')
 
-os.system('mv '+filepath+'/weights/*.xml TrainOut')
+os.system('cp '+filepath+'/weights/*.xml TrainOut')
 
 for f in files:
 	os.system('''root -l -q -b 'CutReader.C("'''+f[0]+'''",'''+f[1]+''')' ''')
