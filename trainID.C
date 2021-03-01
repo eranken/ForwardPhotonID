@@ -23,12 +23,15 @@ using namespace TMVA;
 
 
 
-void trainID(TString mode, int region, int Nevents){
+void trainID(TString mode, int region, int Nevents, float ptlow = 15, float pthigh = 200){
 
 	TString loadcuts;
 	if(mode=="L") loadcuts ="I";
 	if(mode=="M") loadcuts ="L";
 	if(mode=="T") loadcuts ="M";
+	if(mode=="S") loadcuts ="T";
+	if(mode=="H") loadcuts ="S";
+
 
 //if you want to go back to the old way of reading pt formulas into TMVA
 //this commented out stuff can do that if you provide a "string_replace" function
@@ -92,7 +95,7 @@ void trainID(TString mode, int region, int Nevents){
 
   dataloader->AddSpectator( "Ppt",'F' );
 
-  string fname = "/afs/cern.ch/work/e/eranken/private/space/CMSSW_9_4_13/src/photonIDv1/TrainIn/CutTMVAregion"+to_string(region)+".root";
+  string fname = "/afs/cern.ch/work/e/eranken/private/space/CMSSW_9_4_13/src/electronIDv1/TrainIn/CutTMVAregion"+to_string(region)+".root";
 
  TFile* input = new TFile( fname.c_str() ,"READ");
 
@@ -109,10 +112,8 @@ void trainID(TString mode, int region, int Nevents){
    dataloader->AddBackgroundTree( background , backgroundWeight );
 
   // Set initial selection cuts
-   TCut mycuts ="Ppt>15   && Ppt < 200";
-   //TCut mycuts ="Ppt>15   && Ppt < 60";
-   TCut mycutb ="Ppt>15   && Ppt < 200";
-   //TCut mycutb ="Ppt>15   && Ppt < 60";
+   TCut mycuts =("Ppt>"+to_string(ptlow)+"   && Ppt < "+to_string(pthigh)).c_str();
+   TCut mycutb =("Ppt>"+to_string(ptlow)+"   && Ppt < "+to_string(pthigh)).c_str();
 
    //this is where Ntrain, Ntest are included+set 
   dataloader->PrepareTrainingAndTestTree(mycuts,mycutb,"nTrain_Signal="+to_string(Nevents)+":nTrain_Background="+to_string(Nevents)+":nTest_Signal=0:nTest_Background=0");

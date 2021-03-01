@@ -4,6 +4,8 @@ name = sys.argv[1]
 WP = sys.argv[2]
 reg = sys.argv[3]
 Ntrain = sys.argv[4]
+lowpt = sys.argv[5]
+highpt = sys.argv[6]
 
 thisdir = os.getcwd()
 
@@ -28,7 +30,7 @@ if not os.path.isdir(namedir):
 os.mkdir(jobdir)
 
 jobflavor = 'workday'
-maxruntime = 10*3600
+maxruntime = 24*3600
 exec_name = 'exec.sh'
 
 inputcuts = os.path.join(thisdir,'InputCuts')
@@ -65,9 +67,8 @@ pwd
 ls
 mkdir weights
 hostname
-root -l -b -q 'trainID.C("{2}",{3},{4})'
-cp dataset/weights/* {5}/weights/
-cp *.root {5}/'''.format(scram,cmssw_loc,WP,reg,Ntrain,namedir)
+root -l -b -q 'trainID.C("{2}",{3},{4},{5},{6})'
+cp dataset/weights/* {5}/weights/'''.format(scram,cmssw_loc,WP,reg,Ntrain,namedir,lowpt,highpt)
 
 condor_file = open(os.path.join(jobdir,'condor.sub'),'w')
 condor_file.write(condor_filetext)

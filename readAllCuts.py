@@ -18,6 +18,7 @@ print files
 os.system('rm InputCuts/Cuts_L*')
 os.system('rm InputCuts/Cuts_M*')
 os.system('rm InputCuts/Cuts_T*')
+os.system('rm InputCuts/Cuts_S*')
 
 os.system('cp '+filepath+'/weights/*.xml TrainOut')
 
