@@ -23,7 +23,11 @@ using namespace TMVA;
 
 
 
-void trainID(TString mode, int region, int Nevents, int pthigh = 200, bool requirePix = 0){
+void trainID(TString mode, int region, int Nevents, int pthigh = 200, bool requirePix = 0,string infile = ""){
+	
+	if (infile == "") {
+		infile = "TrainIn/CutTMVAregion"+to_string(region)+".root";
+	}
 
 	TString loadcuts;
 	if(mode=="L") loadcuts ="I";
@@ -97,9 +101,8 @@ void trainID(TString mode, int region, int Nevents, int pthigh = 200, bool requi
 
   dataloader->AddSpectator( "Ppt",'F' );
   dataloader->AddSpectator("Pix", 'I');
-  string fname = "/afs/cern.ch/work/e/eranken/private/space/CMSSW_9_4_13/src/electronIDv1/TrainIn/CutTMVAregion"+to_string(region)+".root";
 
- TFile* input = new TFile( fname.c_str() ,"READ");
+ TFile* input = new TFile( infile.c_str() ,"READ");
 
   // --- Register the regression tree
   TTree *signal = (TTree*)input->Get("t_S");
