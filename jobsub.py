@@ -4,8 +4,8 @@ name = sys.argv[1]
 WP = sys.argv[2]
 reg = sys.argv[3]
 Ntrain = sys.argv[4]
-lowpt = sys.argv[5]
-highpt = sys.argv[6]
+hightpt = sys.argv[5]
+pixreq = sys.argv[6]
 
 thisdir = os.getcwd()
 
@@ -68,7 +68,7 @@ ls
 mkdir weights
 hostname
 root -l -b -q 'trainID.C("{2}",{3},{4},{6},{7})'
-cp dataset/weights/* {5}/weights/'''.format(scram,cmssw_loc,WP,reg,Ntrain,namedir,lowpt,highpt)
+cp dataset/weights/* {5}/weights/'''.format(scram,cmssw_loc,WP,reg,Ntrain,namedir,highpt,pixreq)
 
 condor_file = open(os.path.join(jobdir,'condor.sub'),'w')
 condor_file.write(condor_filetext)
