@@ -4,7 +4,7 @@ name = sys.argv[1]
 WP = sys.argv[2]
 reg = sys.argv[3]
 Ntrain = sys.argv[4]
-hightpt = sys.argv[5]
+highpt = sys.argv[5]
 pixreq = sys.argv[6]
 
 thisdir = os.getcwd()
@@ -30,7 +30,7 @@ if not os.path.isdir(namedir):
 os.mkdir(jobdir)
 
 jobflavor = 'workday'
-maxruntime = 24*3600
+maxruntime = 8*3600
 exec_name = 'exec.sh'
 
 inputcuts = os.path.join(thisdir,'InputCuts')
