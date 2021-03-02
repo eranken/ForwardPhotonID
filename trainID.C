@@ -23,7 +23,7 @@ using namespace TMVA;
 
 
 
-void trainID(TString mode, int region, int Nevents, float ptlow = 15, float pthigh = 200){
+void trainID(TString mode, int region, int Nevents, int pthigh = 200, bool requirePix = 0){
 
 	TString loadcuts;
 	if(mode=="L") loadcuts ="I";
@@ -31,6 +31,8 @@ void trainID(TString mode, int region, int Nevents, float ptlow = 15, float pthi
 	if(mode=="T") loadcuts ="M";
 	if(mode=="S") loadcuts ="T";
 	if(mode=="H") loadcuts ="S";
+
+	int ptlow = 15;
 
 
 //if you want to go back to the old way of reading pt formulas into TMVA
@@ -94,7 +96,7 @@ void trainID(TString mode, int region, int Nevents, float ptlow = 15, float pthi
 
 
   dataloader->AddSpectator( "Ppt",'F' );
-
+  dataloader->AddSpectator("Pix", 'I');
   string fname = "/afs/cern.ch/work/e/eranken/private/space/CMSSW_9_4_13/src/electronIDv1/TrainIn/CutTMVAregion"+to_string(region)+".root";
 
  TFile* input = new TFile( fname.c_str() ,"READ");
@@ -112,8 +114,12 @@ void trainID(TString mode, int region, int Nevents, float ptlow = 15, float pthi
    dataloader->AddBackgroundTree( background , backgroundWeight );
 
   // Set initial selection cuts
-   TCut mycuts =("Ppt>"+to_string(ptlow)+"   && Ppt < "+to_string(pthigh)).c_str();
-   TCut mycutb =("Ppt>"+to_string(ptlow)+"   && Ppt < "+to_string(pthigh)).c_str();
+  //
+  TString cutString ="Ppt>"+to_string(ptlow)+"   && Ppt < "+to_string(pthigh);
+  if (requirePix) cutString+=" && Pix==1";
+
+  TCut mycuts =cutString.Data();
+  TCut mycutb =cutString.Data();
 
    //this is where Ntrain, Ntest are included+set 
   dataloader->PrepareTrainingAndTestTree(mycuts,mycutb,"nTrain_Signal="+to_string(Nevents)+":nTrain_Background="+to_string(Nevents)+":nTest_Signal=0:nTest_Background=0");

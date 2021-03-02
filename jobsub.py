@@ -67,7 +67,7 @@ pwd
 ls
 mkdir weights
 hostname
-root -l -b -q 'trainID.C("{2}",{3},{4},{5},{6})'
+root -l -b -q 'trainID.C("{2}",{3},{4},{6},{7})'
 cp dataset/weights/* {5}/weights/'''.format(scram,cmssw_loc,WP,reg,Ntrain,namedir,lowpt,highpt)
 
 condor_file = open(os.path.join(jobdir,'condor.sub'),'w')
