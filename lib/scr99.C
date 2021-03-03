@@ -2,7 +2,7 @@
 #include <TMath.h>
 
 
-void scr99(int region){
+void scr99(int region, int highpt){
 
 cout<<"doing region " << region<<endl;
 	TFile *f1 = new TFile(("TrainIn/CutTMVAregion"+to_string(region)+".root").c_str());
@@ -58,8 +58,8 @@ float ToE,Sie,IsoP,IsoC,IsoN,weighT,Ppt;
   for(int i = 0; i < maxentries; i++){
     t_S->GetEntry(i);
 
-    if(Ppt < 20 ) continue;
-    if(Ppt > 200 ) continue;
+    if(Ppt < 15 ) continue;
+    if(Ppt > (float)highpt ) continue;
 
     if(Sie > max_s)max_s = Sie;
     if(ToE > max_s)max_t = ToE;

@@ -9,6 +9,7 @@
 #include "lib/TableWriter.C"
 #include "lib/ErrScanning.C"
 #include "lib/ContourBuilder.C"
+#include "lib/configParser.h"
 /*
 #include <cstdlib>
 #include <TSystem.h>
@@ -29,12 +30,15 @@ void runEA(){
   // for each of the specified process.
   //
   //--------------------------------------------------------------------------------------------
-  string baseDir = "root://eoscms.cern.ch//eos/cms/store/group/phys_egamma/PhotonIDtuning/CutBasedID/nTuples_94X_v2/";
-  string inFileName = "GJetgjet_add.root";
-  string inFilePath = (baseDir+inFileName).c_str();
+ // string baseDir = "root://eoscms.cern.ch//eos/cms/store/group/phys_egamma/PhotonIDtuning/CutBasedID/nTuples_94X_v2/GJetgjet_add.root";
+  //string inFilePath = (baseDir+inFileName).c_str();
   gROOT->SetBatch();
 
-  vector<double> etaBins{0,1.0, 1.479,2.0,2.2,2.3,2.4,2.5,2.66,2.87,3.0};
+  ConfigParser* CP = new ConfigParser("config.cfg");
+  vector<double> etaBins = CP->GetVector<double>("EAbins");
+  string inFilePath = CP->Get<string>("inputfile");
+
+  //vector<double> etaBins{0,1.0, 1.479,2.0,2.2,2.3,2.4,2.5,2.66,2.87,3.0};
   //vector<double> etaBins{0,1.0, 1.479};
   size_t N_etaBins = etaBins.size()-1;
 
