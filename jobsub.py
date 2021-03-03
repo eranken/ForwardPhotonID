@@ -6,6 +6,7 @@ reg = sys.argv[3]
 Ntrain = sys.argv[4]
 highpt = sys.argv[5]
 pixreq = sys.argv[6]
+hours = sys.argv[7]
 
 thisdir = os.getcwd()
 infile = os.path.join(thisdir,'TrainIn','CutTMVAregion'+str(reg)+'.root')
@@ -32,7 +33,7 @@ if not os.path.isdir(namedir):
 os.mkdir(jobdir)
 
 jobflavor = 'workday'
-maxruntime = 1*3600
+maxruntime = hours*3600
 exec_name = 'exec.sh'
 
 inputcuts = os.path.join(thisdir,'InputCuts')
