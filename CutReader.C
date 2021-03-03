@@ -65,7 +65,7 @@ void CutReader(TString whichcut, int region){
   TString weightfile = "./TrainOut/TMVAClassification_"+methodName+".weights.xml";
 
   TMVA::Reader *reader = new TMVA::Reader( "!Color" );
-  float Sieie,ToE,isoC,isoN,isoP,pt;
+  float Sieie,ToE,isoC,isoN,isoP,pt,Pix;
   reader->AddVariable("ToE",&ToE);
   reader->AddVariable("Sieie",&Sieie);
   reader->AddVariable( "isoC",&isoC );
@@ -77,6 +77,7 @@ void CutReader(TString whichcut, int region){
 
 
   reader->AddSpectator("Ppt",&pt);
+  reader->AddSpectator("Pix",&Pix);
 
 
   reader->BookMVA(methodName,weightfile);
