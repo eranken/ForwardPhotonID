@@ -1,6 +1,7 @@
 #include <cstdlib>
 #include <TMath.h>
 #include "lib/scr99.C"
+#include "lib/configParser.h"
 
 void run99(){
         ConfigParser* CP = new ConfigParser("config.cfg");
@@ -12,7 +13,7 @@ void run99(){
                 N_Regions++;
         }
 
-	for (int i=0; i<N_regions; i++) {
+	for (int i=0; i<N_Regions; i++) {
 		scr99(i,60);
 	}
 	  
