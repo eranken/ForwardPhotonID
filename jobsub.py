@@ -1,12 +1,24 @@
-import sys, os, time, subprocess, re
+import sys, os, time, subprocess, re, argparse
 
-name = sys.argv[1]
-WP = sys.argv[2]
-reg = sys.argv[3]
-Ntrain = sys.argv[4]
-highpt = sys.argv[5]
-pixreq = sys.argv[6]
-hours = sys.argv[7]
+parser = argparse.ArgumentParser()
+
+parser.add_argument('--name',action='store', type=str)
+parser.add_argument('--pix',action='store', type=str, default = "0")
+parser.add_argument('--WP',action='store', type=str)
+parser.add_argument('--region',action='store', type=str)
+parser.add_argument('--Ntrain',action='store', type=str, default = "100000")
+parser.add_argument('--hours',action='store', type=int, default = 24) 
+parser.add_argument('--ptcutoff',action='store', type=str, default = "200") 
+
+args = parser.parse_args()
+
+name = args.name
+WP = args.WP
+reg = args.region
+Ntrain = args.Ntrain
+highpt = args.ptcutoff
+pixreq = args.pix
+hours = args.hours
 
 thisdir = os.getcwd()
 infile = os.path.join(thisdir,'TrainIn','CutTMVAregion'+str(reg)+'.root')
