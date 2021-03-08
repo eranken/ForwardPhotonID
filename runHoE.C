@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <TSystem.h>
 #include "lib/hoeFit.C"
+#include "lib/configParser.h"
 
 void runHoE() {
         ConfigParser* CP = new ConfigParser("config.cfg");
