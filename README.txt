@@ -16,7 +16,8 @@ NOTE: steps 2 and 5 are time consuming and can be sent off to condor if desired.
 $ source ./setup.sh
 
 -----------------
-1.  set the input files and binning as desired in config.cfg .
+1.  set the input files and binning as desired in config.cfg . A sample with default values can be found in sample_config.cfg , so to use the defaults simply run
+$ cp sample_config.cfg config.cfg
 
 -----------------
 2. To calculate Effective Area slopes, run
