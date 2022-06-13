@@ -65,7 +65,7 @@ void CutReader(TString whichcut, int region){
   TString weightfile = "./TrainOut/TMVAClassification_"+methodName+".weights.xml";
 
   TMVA::Reader *reader = new TMVA::Reader( "!Color" );
-  float Sieie,ToE,isoC,isoN,isoP,pt;
+  float Sieie,ToE,isoC,isoN,isoP,pt,Pix;
   reader->AddVariable("ToE",&ToE);
   reader->AddVariable("Sieie",&Sieie);
   reader->AddVariable( "isoC",&isoC );
@@ -77,6 +77,7 @@ void CutReader(TString whichcut, int region){
 
 
   reader->AddSpectator("Ppt",&pt);
+  reader->AddSpectator("Pix",&Pix);
 
 
   reader->BookMVA(methodName,weightfile);
@@ -87,7 +88,7 @@ void CutReader(TString whichcut, int region){
   std::vector<Double_t> cutsMax;
 
 
-  double SEF = whichcut=="L" ? 0.90 : (whichcut=="M" ? 0.8 : (whichcut == "T" ? 0.7 : 0.0));
+  double SEF = whichcut=="L" ? 0.90 : (whichcut=="M" ? 0.8 : (whichcut == "T" ? 0.7 : (whichcut == "S" ? 0.6 : 0.0)));
   cout << SEF << endl;
   if(mcuts)mcuts->GetCuts(SEF, cutsMin, cutsMax );
   outfile<<cutsMax[0]<<endl<<cutsMax[1]<<endl<<cutsMax[2]<<endl<<cutsMax[3]<<endl<<cutsMax[4]<<endl;

@@ -50,9 +50,9 @@ void ContourBuilder(string &inFilePath_, int bin,double minEta,double maxEta,dou
 
 
 
-  TH2F *isoNrho = new TH2F("isoNrho","Iso neutral hadrons vs #rho",30,0,30,2000,0,200);
-  TH2F *isoPrho = new TH2F("isoPrho","Iso Photon vs #rho",30,0,30,2000,0,200);
-  TH2F *isoCrho = new TH2F("isoCrho","Iso Charge hadrons vs #rho",30,0,30,2000,0,200);
+  TH2F *isoNrho = new TH2F("isoNrho","Iso neutral hadrons vs #rho",30,0,30,2000,0,100);
+  TH2F *isoPrho = new TH2F("isoPrho","Iso Photon vs #rho",30,0,30,2000,0,100);
+  TH2F *isoCrho = new TH2F("isoCrho","Iso Charge hadrons vs #rho",30,0,30,2000,0,50);
 
   TH2F *isoNrho_rel = new TH2F("isoNrho_rel","Iso neutral hadrons vs #rho",30,0,30,1000,0,200);
   TH2F *isoPrho_rel = new TH2F("isoPrho_rel","Iso Photon vs #rho",30,0,30,1000,0,200);

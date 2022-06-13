@@ -2,32 +2,29 @@
 #include <TMath.h>
 
 
-void scr99(int region){
+void scr99(int region, int highpt){
 
 cout<<"doing region " << region<<endl;
 	TFile *f1 = new TFile(("TrainIn/CutTMVAregion"+to_string(region)+".root").c_str());
   TTree *t_S = (TTree*)f1->Get("t_S");
 
 //this loads the isoP/isoN Pt formulas but not needed now  
-ifstream isoPfile;
-ifstream isoNfile;
-isoPfile.open(("HPT/isoP"+to_string(region)+".txt"));
-isoNfile.open(("HPT/isoN"+to_string(region)+".txt"));
-TString isoP_formstring;
-TString isoN_formstring;
-isoPfile>>isoP_formstring;
-isoNfile>>isoN_formstring;
+//ifstream isoPfile;
+//ifstream isoNfile;
+//isoPfile.open(("HPT/isoP"+to_string(region)+".txt"));
+//isoNfile.open(("HPT/isoN"+to_string(region)+".txt"));
+//TString isoP_formstring;
+//TString isoN_formstring;
+//isoPfile>>isoP_formstring;
+//isoNfile>>isoN_formstring;
 
-cout<<isoP_formstring<<endl;
-cout<<isoN_formstring<<endl;
-
-TFormula *isoP_form = new TFormula(("isoPreg"+to_string(region)).c_str(),isoP_formstring);
-TFormula *isoN_form = new TFormula(("isoNreg"+to_string(region)).c_str(),isoN_formstring);
+//TFormula *isoP_form = new TFormula(("isoPreg"+to_string(region)).c_str(),isoP_formstring);
+//TFormula *isoN_form = new TFormula(("isoNreg"+to_string(region)).c_str(),isoN_formstring);
 
 float ToE,Sie,IsoP,IsoC,IsoN,weighT,Ppt;
 
   ofstream myfile;
-  myfile.open(("TrainIn/Cuts_I"+to_string(region)+".txt").c_str());
+  myfile.open(("InputCuts/Cuts_I"+to_string(region)+".txt").c_str());
 
 
   t_S->SetBranchAddress("Ppt",&Ppt);
@@ -56,13 +53,13 @@ float ToE,Sie,IsoP,IsoC,IsoN,weighT,Ppt;
   max_n = 0;
   max_t = 0;
   double totS = 0;
-  int maxentries = min(t_S->GetEntries(),10000000LL);
+  int maxentries = min(t_S->GetEntries(),5000000LL);
   //for(int i = 0; i < t_S->GetEntries(); i++){
   for(int i = 0; i < maxentries; i++){
     t_S->GetEntry(i);
 
-    if(Ppt < 20 ) continue;
-    if(Ppt > 200 ) continue;
+    if(Ppt < 15 ) continue;
+    if(Ppt > (float)highpt ) continue;
 
     if(Sie > max_s)max_s = Sie;
     if(ToE > max_s)max_t = ToE;
@@ -151,16 +148,16 @@ float ToE,Sie,IsoP,IsoC,IsoN,weighT,Ppt;
 if (i>9900) {	
 	
 
-   cout<<"bin "<<i<<endl;
-   cout<<"SHPNC:W bincenter / integrated content"<<endl;
-   cout<<xcs<<", "<<xch<<", "<<xcp<<", "<<xcc<<", "<<xcn<<", "<<endl;  	
-	cout<<sie_b<<", "<<toe_b<<", "<<pho_b<<", "<< neu_b<<", "<<chg_b <<" : "<<W<<endl;
+   //cout<<"bin "<<i<<endl;
+   //cout<<"SHPNC:W bincenter / integrated content"<<endl;
+   //cout<<xcs<<", "<<xch<<", "<<xcp<<", "<<xcc<<", "<<xcn<<", "<<endl;  	
+	//cout<<sie_b<<", "<<toe_b<<", "<<pho_b<<", "<< neu_b<<", "<<chg_b <<" : "<<W<<endl;
 	}
 	int bin = HS->FindBin(xcs);
    //cout<<i<<" "<<(HH->Integral(1,i))/(HH->Integral()*1.0)<<" "<<(HH->Integral(1,i))/(totS*1.0)<<endl;
 
 
-   if(1.0*HS->Integral(1,i)/totS > 0.999 && p1 == 0){
+   if(1.0*HS->Integral(1,i)/totS > 0.9999 && p1 == 0){
 
      p1 = 1;
      xcsf = xcs;
@@ -169,7 +166,7 @@ if (i>9900) {
 
   bin = HH->FindBin(xch);
   // cout<<1.0*HH->Integral(1,i)/totS<<endl;
-  if(1.0*HH->Integral(1,i)/totS > 0.999 && p2 == 0){
+  if(1.0*HH->Integral(1,i)/totS > 0.9999 && p2 == 0){
 
     xchf = xch;
     p2 =1;
@@ -177,20 +174,20 @@ if (i>9900) {
    bin = HP->FindBin(xcp);
    // cout<<1.0*HP->Integral(1,i)/totS<<endl;
 
-   if(1.0*HP->Integral(1,i)/totS > 0.999 && p3 == 0){
+   if(1.0*HP->Integral(1,i)/totS > 0.9999 && p3 == 0){
 
      xcpf = xcp;
      p3 = 1;
    }
   bin = HC->FindBin(xcc);
-  if(1.0*HC->Integral(1,i)/totS > 0.999 && p4 == 0){
+  if(1.0*HC->Integral(1,i)/totS > 0.9999 && p4 == 0){
 
     xccf = xcc;
     p4 = 1;
   }
   bin = HN->FindBin(xcn);
   //  cout<<1.0*HN->Integral(1,i)/totS<<" "<<p5<<endl;
-  if(1.0*HN->Integral(1,i)/totS > 0.999 && p5 == 0){
+  if(1.0*HN->Integral(1,i)/totS > 0.9999 && p5 == 0){
 
     p5 = 1;
     xcnf = xcn;
